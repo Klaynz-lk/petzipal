@@ -1,0 +1,42 @@
+[
+  {
+    "id": 2,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 3,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 4,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 5,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 6,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 7,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 8,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  },
+  {
+    "id": 9,
+    "imageBig": "assets/images/bg/banner-img.jpg",
+    "smallimage": "assets/images/bg/banner-img.jpg"
+  }
+]

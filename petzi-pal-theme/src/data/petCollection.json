@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "img": "assets/images/bg/banner-img.jpg",
+    "title": "Whiskas Cat Food Core Tuna",
+    "offer_price": "25.00",
+    "regular_price": "30.00",
+    "review": "30",
+  "tag": "offer",
+  "description": "Cozy cotton house for cats.",
+  "vet_name": "Nimal Perera",
+  "time_duration": "30 min",
+  "location": "Dehiwala"
+  },
+  {
+    "id": 2,
+    "img": "assets/images/bg/banner-img.jpg",
+    "title": "Friskies Kitten Discoveries.",
+    "offer_price": "55.00",
+    "regular_price": "60.00",
+    "review": "33",
+  "tag": "hot",
+  "tag_badge": "",
+  "description": "Cozy cotton house for cats.",
+  "vet_name": "Chamari Silva",
+  "time_duration": "45 min",
+  "location": "Moratuwa"
+  },
+  {
+    "id": 3,
+    "img": "assets/images/bg/banner-img.jpg",
+    "title": "Joules Cat Cotton House.",
+    "offer_price": "12.00",
+    "regular_price": "25.00",
+    "review": "10",
+  "tag": "Sold Out",
+  "tag_badge": "sold-out",
+  "description": "Cozy cotton house for cats.",
+  "vet_name": "Ruwan Jayasuriya",
+  "time_duration": "60 min",
+  "location": "Dehiwala"
+  }
+]
