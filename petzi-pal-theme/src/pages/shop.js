@@ -1,11 +1,91 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import ShopCard from "../components/shop/ShopCard";
 import Layout from "../layout/Layout";
-import servicesData from "../data/servicesData";
 
 function Shop() {
+  const router = useRouter();
   const [value, setValue] = React.useState(50);
+  const [servicesData, setServicesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
+  const [typeData, setTypeData] = useState([]);
+  const [selectedService, setSelectedService] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [selectedLocations, setSelectedLocations] = useState([]);
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const endpoint = `${backendUrl}/api/v1/pet-services`;
+  const typeEndpoint = `${backendUrl}/api/v1/pet-service-type`;
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch(endpoint);
+        const typeRes = await fetch(typeEndpoint);
+        if (!res.ok) throw new Error("Failed to fetch services");
+        if (!typeRes.ok) throw new Error("Failed to fetch service types");
+        const data = await res.json();
+        const typeData = await typeRes.json();
+        setTypeData(typeData);
+        setServicesData(data);
+        
+        // Extract unique locations from services data
+        const uniqueLocations = [];
+        const locationMap = new Map();
+        
+        data.forEach(service => {
+          if (service.location) {
+            const locationKey = service.location.city || service.location.name || service.location;
+            if (locationKey && !locationMap.has(locationKey)) {
+              locationMap.set(locationKey, {
+                id: locationKey.toLowerCase().replace(/\s+/g, '-'),
+                name: locationKey,
+                city: service.location.city || service.location.name || service.location
+              });
+            }
+          }
+        });
+        
+        const extractedLocations = Array.from(locationMap.values());
+        setLocations(extractedLocations);
+        
+        console.log("Services data:", data);
+        console.log("Type data:", typeData);
+        console.log("Extracted locations:", extractedLocations);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, [endpoint]);
+
+  // Handlers for filtering
+  const handleServiceTypeChange = (e) => {
+    const value = e.target.value;
+    console.log("Service type changed to:", value);
+    setSelectedType(value);
+  };
+
+  const handleLocationChange = (locationName, isChecked) => {
+    setSelectedLocations(prev => {
+      if (isChecked) {
+        return [...prev, locationName];
+      } else {
+        return prev.filter(loc => loc !== locationName);
+      }
+    });
+  };
+
+  // Read service ID from URL query parameters
+  useEffect(() => {
+    if (router.isReady && router.query.service) {
+      setSelectedService(router.query.service);
+    }
+  }, [router.isReady, router.query.service]);
   return (
     <Layout>
       <Breadcrumb pageName="Shop" pageTitle="Shop" />
@@ -20,28 +100,25 @@ function Shop() {
                     <div className="district-filter">
                       <div className="district-group mb-2">
                         <div className="checkbox-container">
-                          <strong>Colombo</strong>
-                          <label className="containerss">
-                            Dehiwala
-                            <input type="checkbox" />
-                            <span className="checkmark" />
-                          </label>
-                          <label className="containerss">
-                            Moratuwa
-                            <input type="checkbox" />
-                            <span className="checkmark" />
-                          </label>
-                          <strong>Kalutara</strong>
-                          <label className="containerss">
-                            Dehiwala
-                            <input type="checkbox" />
-                            <span className="checkmark" />
-                          </label>
-                          <label className="containerss">
-                            Moratuwa
-                            <input type="checkbox" />
-                            <span className="checkmark" />
-                          </label>
+                          {loading ? (
+                            <p>Loading locations...</p>
+                          ) : error ? (
+                            <p style={{ color: "red" }}>Error loading locations</p>
+                          ) : locations.length > 0 ? (
+                            locations.map((location) => (
+                              <label key={location.id} className="containerss">
+                                {location.name}
+                                <input 
+                                  type="checkbox" 
+                                  checked={selectedLocations.includes(location.name)}
+                                  onChange={(e) => handleLocationChange(location.name, e.target.checked)}
+                                />
+                                <span className="checkmark" />
+                              </label>
+                            ))
+                          ) : (
+                            <p>No locations available</p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -118,16 +195,23 @@ function Shop() {
                     <div className="single-select">
                       <select
                         className="defult-select-drowpown"
-                        defaultValue=""
+                        value={selectedService}
+                        onChange={(e) => setSelectedService(e.target.value)}
                       >
                         <option value="" disabled>
                           Select Service
                         </option>
-                        {servicesData.map((service) => (
-                          <option key={service.id} value={service.id}>
-                            {service.name}
-                          </option>
-                        ))}
+                        {loading ? (
+                          <option disabled>Loading services...</option>
+                        ) : error ? (
+                          <option disabled>Error loading services</option>
+                        ) : (
+                          typeData.map((type) => (
+                            <option key={type.id} value={type.id}>
+                              {type.name}
+                            </option>
+                          ))
+                        )}
                       </select>
                     </div>
                     <div className="multiselect-area">
@@ -160,7 +244,10 @@ function Shop() {
                 </div>
               </div>
               <div className="row g-4 justify-content-center">
-                <ShopCard />
+                <ShopCard 
+                  selectedServiceType={selectedService} 
+                  selectedLocations={selectedLocations}
+                />
               </div>
               <div className="row pt-70">
                 <div className="col-lg-12 d-flex justify-content-center">

@@ -1,10 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import Layout from "../layout/Layout";
-import servicesData from "../data/servicesData";
 
 const Services = () => {
+  const [servicesData, setServicesData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const endpoint = `${backendUrl}/api/v1/pet-service-type`;
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error("Failed to fetch services");
+        const data = await res.json();
+        setServicesData(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, [endpoint]);
+
+  if (loading) {
+    return (
+      <Layout>
+        <Breadcrumb pageName="Services" pageTitle="Services" />
+        <div className="container pt-120 mb-120">
+          <div className="row justify-content-center">
+            <div className="col-12 text-center">
+              <p>Loading services...</p>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <Breadcrumb pageName="Services" pageTitle="Services" />
+        <div className="container pt-120 mb-120">
+          <div className="row justify-content-center">
+            <div className="col-12 text-center">
+              <p style={{ color: "red" }}>Error: {error}</p>
+            </div>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
   return (
     <Layout>
       <Breadcrumb pageName="Services" pageTitle="Services" />
@@ -38,7 +89,7 @@ const Services = () => {
                     className="img-fluid service-img mb-3"
                   />
                   <h3 className="service-title mb-4">{service.name}</h3>
-                  <Link href="/shop" legacyBehavior>
+                  <Link href={`/shop?service=${service.id}`} legacyBehavior>
                     <a className="account-btn">View Services</a>
                   </Link>
                 </div>

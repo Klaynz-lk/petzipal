@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import SwiperCore, {
   Autoplay,
   EffectFade,
@@ -8,7 +8,30 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 SwiperCore.use([Navigation, Pagination, Autoplay, EffectFade]);
+
 function Home1Service() {
+  const [serviceTypes, setServiceTypes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const endpoint = `${backendUrl}/api/v1/pet-services`;
+
+  useEffect(() => {
+    const fetchServiceTypes = async () => {
+      try {
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error("Failed to fetch service types");
+        const data = await res.json();
+        setServiceTypes(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServiceTypes();
+  }, [endpoint]);
   const serviceSlider = {
     slidesPerView: "auto",
     spaceBetween: 24,
@@ -78,110 +101,66 @@ function Home1Service() {
           </div>
         </div>
         <div className="row">
-          <Swiper {...serviceSlider} className="swiper home1-services-slider">
-            <div className="swiper-wrapper">
-              <SwiperSlide className="swiper-slide">
-                <div className="services-card1">
-                  <img
-                    className="services-card-vec"
-                    src="assets/images/bg/services-card-vec.png"
-                    alt=""
-                  />
-                  <div className="icon">
-                    <img src="assets/images/icon/daycare-center2.svg" alt="" />
-                  </div>
-                  <div className="content">
-                    <h3>
-                      <Link legacyBehavior href="/services">
-                        <a>Daycare</a>
-                      </Link>
-                    </h3>
-                  </div>
-                  <Link legacyBehavior href="/services">
-                    <a className="more-btn">
-                      More Details
-                      <img src="assets/images/icon/btn-arrow1.svg" alt="" />
-                    </a>
-                  </Link>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="swiper-slide">
-                <div className="services-card1 two">
-                  <img
-                    className="services-card-vec"
-                    src="assets/images/bg/services-card-vec.png"
-                    alt=""
-                  />
-                  <div className="icon">
-                    <img src="assets/images/icon/grooming2.svg" alt="" />
-                  </div>
-                  <div className="content">
-                    <h3>
-                      <Link legacyBehavior href="/services">
-                        <a> Grooming</a>
-                      </Link>
-                    </h3>
-                  </div>
-                  <Link legacyBehavior href="/services">
-                    <a className="more-btn">
-                      More Details
-                      <img src="assets/images/icon/btn-arrow1.svg" alt="" />
-                    </a>
-                  </Link>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="swiper-slide">
-                <div className="services-card1 three">
-                  <img
-                    className="services-card-vec"
-                    src="assets/images/bg/services-card-vec.png"
-                    alt=""
-                  />
-                  <div className="icon">
-                    <img src="assets/images/icon/boarding2.svg" alt="" />
-                  </div>
-                  <div className="content">
-                    <h3>
-                      <Link legacyBehavior href="/services">
-                        <a> Boarding</a>
-                      </Link>
-                    </h3>
-                  </div>
-                  <Link legacyBehavior href="/services">
-                    <a className="more-btn">
-                      More Details
-                      <img src="assets/images/icon/btn-arrow1.svg" alt="" />
-                    </a>
-                  </Link>
-                </div>
-              </SwiperSlide>
-              <SwiperSlide className="swiper-slide">
-                <div className="services-card1 four">
-                  <img
-                    className="services-card-vec"
-                    src="assets/images/bg/services-card-vec.png"
-                    alt=""
-                  />
-                  <div className="icon">
-                    <img src="assets/images/icon/veterinary2.svg" alt="" />
-                  </div>
-                  <div className="content">
-                    <h3>
-                      <Link legacyBehavior href="/services">
-                        <a>veterinary</a>
-                      </Link>
-                    </h3>
-                  </div>
-                  <Link legacyBehavior href="/services">
-                    <a className="more-btn">
-                      More Details
-                      <img src="assets/images/icon/btn-arrow1.svg" alt="" />
-                    </a>
-                  </Link>
-                </div>
-              </SwiperSlide>
+          {loading && (
+            <div className="col-12 text-center">
+              <p>Loading service types...</p>
             </div>
-          </Swiper>
+          )}
+          {error && (
+            <div className="col-12 text-center">
+              <p style={{ color: "red" }}>Error: {error}</p>
+            </div>
+          )}
+          {!loading && !error && (
+            <Swiper {...serviceSlider} className="swiper home1-services-slider">
+              <div className="swiper-wrapper">
+                {serviceTypes.map((service, index) => {
+                  const cardClasses = ["services-card1"];
+                  if (index === 1) cardClasses.push("two");
+                  if (index === 2) cardClasses.push("three");
+                  if (index === 3) cardClasses.push("four");
+
+                  // Default icon mapping - you can customize this based on your service types
+                  const getServiceIcon = (serviceName) => {
+                    const name = serviceName.toLowerCase();
+                    if (name.includes("daycare")) return "assets/images/icon/daycare-center2.svg";
+                    if (name.includes("grooming")) return "assets/images/icon/grooming2.svg";
+                    if (name.includes("boarding")) return "assets/images/icon/boarding2.svg";
+                    if (name.includes("veterinary") || name.includes("vet")) return "assets/images/icon/veterinary2.svg";
+                    return "assets/images/icon/daycare-center2.svg"; // default icon
+                  };
+
+                  return (
+                    <SwiperSlide key={service.id} className="swiper-slide">
+                      <div className={cardClasses.join(" ")}>
+                        <img
+                          className="services-card-vec"
+                          src="assets/images/bg/services-card-vec.png"
+                          alt=""
+                        />
+                        <div className="icon">
+                          <img src={getServiceIcon(service.name)} alt="" />
+                        </div>
+                        <div className="content">
+                          <h3>
+                            <Link legacyBehavior href="/services">
+                              <a>{service.name}</a>
+                            </Link>
+                          </h3>
+                        </div>
+                        <Link legacyBehavior href={`/shop?service=${service.id}`}>
+                          <a className="more-btn">
+                            More Details
+                            <img src="assets/images/icon/btn-arrow1.svg" alt="" />
+                          </a>
+                        </Link>
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </div>
+            </Swiper>
+          )}
         </div>
       </div>
     </div>
