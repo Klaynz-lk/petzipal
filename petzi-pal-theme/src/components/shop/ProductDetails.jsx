@@ -1,73 +1,65 @@
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ProductPriceCount from "./ProductPriceCount";
+import { addToCart, isInCart, getCartItem } from "../../utils/cartUtils";
 
-function ProductDetails() {
+function ProductDetails({ service }) {
+  const [quantity, setQuantity] = useState(1);
+  const [isInCartState, setIsInCartState] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  // Handle service images - if service has multiple images, use them; otherwise use default
+  const serviceImages = service?.images || [service?.image].filter(Boolean) || ["assets/images/bg/banner-img.jpg"];
+  
+  // Ensure we have at least 5 images for the tabs (duplicate if necessary)
+  const displayImages = [];
+  for (let i = 0; i < 5; i++) {
+    displayImages.push(serviceImages[i % serviceImages.length]);
+  }
+
+  // Check if service is already in cart
+  useEffect(() => {
+    if (service?.id) {
+      setIsInCartState(isInCart(service.id));
+      const cartItem = getCartItem(service.id);
+      if (cartItem) {
+        setQuantity(cartItem.quantity);
+      }
+    }
+  }, [service?.id]);
+
+  const handleAddToCart = () => {
+    if (service) {
+      addToCart(service, quantity);
+      setIsInCartState(true);
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 3000);
+    }
+  };
+
+  const handleQuantityChange = (newQuantity) => {
+    setQuantity(Math.max(1, newQuantity));
+  };
   return (
     <>
       <div className="row g-lg-4 gy-5 mb-120">
         <div className="col-lg-7">
           <div className="tab-content tab-content1" id="v-pills-tabContent">
-            <div
-              className="tab-pane fade active show"
-              id="v-pills-img1"
-              role="tabpanel"
-              aria-labelledby="v-pills-img1-tab"
-            >
-              <img
-                className="img-fluid"
-                src="assets/images/bg/banner-img.jpg"
-                alt=""
-              />
-            </div>
-            <div
-              className="tab-pane fade"
-              id="v-pills-img2"
-              role="tabpanel"
-              aria-labelledby="v-pills-img2-tab"
-            >
-              <img
-                className="img-fluid"
-                src="assets/images/bg/banner-img.jpg"
-                alt=""
-              />
-            </div>
-            <div
-              className="tab-pane fade"
-              id="v-pills-img3"
-              role="tabpanel"
-              aria-labelledby="v-pills-img3-tab"
-            >
-              <img
-                className="img-fluid"
-                src="assets/images/bg/banner-img.jpg"
-                alt=""
-              />
-            </div>
-            <div
-              className="tab-pane fade"
-              id="v-pills-img4"
-              role="tabpanel"
-              aria-labelledby="v-pills-img4-tab"
-            >
-              <img
-                className="img-fluid"
-                src="assets/images/bg/banner-img.jpg"
-                alt=""
-              />
-            </div>
-            <div
-              className="tab-pane fade"
-              id="v-pills-img5"
-              role="tabpanel"
-              aria-labelledby="v-pills-img5-tab"
-            >
-              <img
-                className="img-fluid"
-                src="assets/images/bg/banner-img.jpg"
-                alt=""
-              />
-            </div>
+            {displayImages.map((image, index) => (
+              <div
+                key={index}
+                className={`tab-pane fade ${index === 0 ? 'active show' : ''}`}
+                id={`v-pills-img${index + 1}`}
+                role="tabpanel"
+                aria-labelledby={`v-pills-img${index + 1}-tab`}
+              >
+                <img
+                  className="img-fluid"
+                  src={image}
+                  alt={service?.name || `Service image ${index + 1}`}
+                />
+              </div>
+            ))}
           </div>
           <div
             className="nav nav1 nav-pills"
@@ -75,90 +67,35 @@ function ProductDetails() {
             role="tablist"
             aria-orientation="vertical"
           >
-            <button
-              className="nav-link active"
-              id="v-pills-img1-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#v-pills-img1"
-              type="button"
-              role="tab"
-              aria-controls="v-pills-img1"
-              aria-selected="true"
-            >
-              <img src="assets/images/bg/shop-sm-01.png" alt="" />
-            </button>
-            <button
-              className="nav-link"
-              id="v-pills-img2-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#v-pills-img2"
-              type="button"
-              role="tab"
-              aria-controls="v-pills-img2"
-              aria-selected="false"
-            >
-              <img src="assets/images/bg/shop-sm-02.png" alt="" />
-            </button>
-            <button
-              className="nav-link"
-              id="v-pills-img3-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#v-pills-img3"
-              type="button"
-              role="tab"
-              aria-controls="v-pills-img3"
-              aria-selected="false"
-            >
-              <img src="assets/images/bg/shop-sm-03.png" alt="" />
-            </button>
-            <button
-              className="nav-link"
-              id="v-pills-img4-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#v-pills-img4"
-              type="button"
-              role="tab"
-              aria-controls="v-pills-img4"
-              aria-selected="false"
-            >
-              <img src="assets/images/bg/shop-sm-04.png" alt="" />
-            </button>
-            <button
-              className="nav-link"
-              id="v-pills-img5-tab"
-              data-bs-toggle="pill"
-              data-bs-target="#v-pills-img5"
-              type="button"
-              role="tab"
-              aria-controls="v-pills-img5"
-              aria-selected="false"
-            >
-              <img src="assets/images/bg/shop-sm-05.png" alt="" />
-            </button>
+            {displayImages.map((image, index) => (
+              <button
+                key={index}
+                className={`nav-link ${index === 0 ? 'active' : ''}`}
+                id={`v-pills-img${index + 1}-tab`}
+                data-bs-toggle="pill"
+                data-bs-target={`#v-pills-img${index + 1}`}
+                type="button"
+                role="tab"
+                aria-controls={`v-pills-img${index + 1}`}
+                aria-selected={index === 0}
+              >
+                <img src={image} alt={service?.name || `Service thumbnail ${index + 1}`} />
+              </button>
+            ))}
           </div>
         </div>
         <div className="col-lg-5">
           <div className="shop-details-content">
-            <h3>Full Grooming Package.</h3>
+            <h3>{service?.name || "Service Name"}</h3>
             <ul className="shopuct-review2 d-flex flex-row align-items-center mb-25">
-              <li>
-                <i className="bi bi-star-fill" />
-              </li>
-              <li>
-                <i className="bi bi-star-fill" />
-              </li>
-              <li>
-                <i className="bi bi-star-fill" />
-              </li>
-              <li>
-                <i className="bi bi-star-fill" />
-              </li>
-              <li>
-                <i className="bi bi-star-fill" />
-              </li>
+              {[...Array(5)].map((_, index) => (
+                <li key={index}>
+                  <i className={`bi bi-star${index < (service?.rating || 5) ? '-fill' : ''}`} />
+                </li>
+              ))}
               <li>
                 <a href="#" className="review-no">
-                  (1 customer review)
+                  ({service?.review_count || 1} customer review)
                 </a>
               </li>
             </ul>
@@ -166,19 +103,19 @@ function ProductDetails() {
               <div className="col-12">
                 <div className="model-number d-flex align-items-center gap-2">
                   <span className="fw-semibold">Duration:</span>
-                  <span>40 min</span>
+                  <span>{service?.duration || "40 min"}</span>
                 </div>
               </div>
               <div className="col-12">
                 <div className="model-number d-flex align-items-center gap-2">
                   <span className="fw-semibold">Provider Name:</span>
-                  <span>Akalanka Perera</span>
+                  <span>{service?.provider_name || service?.vet_name || "Professional"}</span>
                 </div>
               </div>
               <div className="col-12 mt-2">
                 <div className="model-number d-flex align-items-center gap-2">
                   <span className="fw-semibold">Location:</span>
-                  <span>Dehiwala</span>
+                  <span>{service?.location?.city || service?.location?.name || service?.location || "Available"}</span>
                 </div>
               </div>
               <div className="col-12 mt-2">
@@ -189,16 +126,32 @@ function ProductDetails() {
               </div>
             </div>
             <div className="price-tag">
-              <h4>Rs. 5000.00</h4>
+              <h4>Rs. {service?.price || "Contact for price"}</h4>
             </div>
             <div className="shop-quantity d-flex align-items-center justify-content-start mb-20">
               <div className="quantity d-flex align-items-center">
-                <ProductPriceCount price={30} />
+                <ProductPriceCount 
+                  price={service?.price || 0} 
+                  quantity={quantity}
+                  onQuantityChange={handleQuantityChange}
+                />
               </div>
-              <Link legacyBehavior href="/cart">
-                <a className="primary-btn3">Add to cart</a>
-              </Link>
+              <button 
+                className={`primary-btn3 ${isInCartState ? 'btn-success' : ''}`}
+                onClick={handleAddToCart}
+                style={{ marginLeft: '10px' }}
+              >
+                {isInCartState ? 'Added to Cart' : 'Add to Cart'}
+              </button>
             </div>
+            
+            {showSuccessMessage && (
+              <div className="alert alert-success mb-3" style={{ padding: '8px 12px', fontSize: '14px' }}>
+                <i className="bi bi-check-circle me-2"></i>
+                Service added to cart successfully!
+              </div>
+            )}
+            
             <div className="buy-now-btn">
               <Link legacyBehavior href="/cart">
                 <a>Buy Now</a>

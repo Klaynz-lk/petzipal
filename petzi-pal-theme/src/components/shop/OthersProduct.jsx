@@ -8,7 +8,7 @@ import SwiperCore, {
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
 SwiperCore.use([Navigation, Pagination, Autoplay, EffectFade]);
-function OthersProduct() {
+function OthersProduct({ otherServices }) {
   const productSlider = useMemo(() => {
     return {
       spaceBetween: 24,
@@ -52,7 +52,7 @@ function OthersProduct() {
       <div className="row">
         <div className="col-lg-12 d-flex flex-wrap align-items-center justify-content-md-between justify-content-start gap-2 mb-60">
           <div className="inner-section-title">
-            <h2>Other Products</h2>
+            <h2>Other Services by {otherServices?.[0]?.provider_name || otherServices?.[0]?.vet_name || "Provider"}</h2>
           </div>
           <div className="swiper-btn-wrap d-flex align-items-center">
             <div className="slider-btn prev-btn-12">
@@ -67,165 +67,57 @@ function OthersProduct() {
       <div className="row">
         <Swiper {...productSlider} className="swiper essential-items-slider">
           <div className="swiper-wrapper">
-            <SwiperSlide className="swiper-slide">
-              <div className="collection-card">
-                <div className="collection-img">
-                  <img
-                    className="img-gluid"
-                    src="assets/images/bg/category/h3-collection-01.png"
-                    alt=""
-                  />
-                  <ul className="cart-icon-list">
-                    <li>
-                      <a href="#">
-                        <img src="assets/images/icon/Icon-cart3.svg" alt="" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="collection-content text-center">
-                  <h4>
-                    <Link legacyBehavior href="/shop-details">
-                      <a>Veterinary Package</a>
-                    </Link>
-                  </h4>
-                  <div className="price">
-                    <h6>$25.00</h6>
+            {otherServices && otherServices.length > 0 ? (
+              otherServices.map((service) => (
+                <SwiperSlide key={service.id} className="swiper-slide">
+                  <div className="collection-card">
+                    <div className="collection-img">
+                      <img
+                        className="img-gluid"
+                        src={service.image || service.images?.[0] || "assets/images/bg/banner-img.jpg"}
+                        alt={service.name}
+                      />
+                      <ul className="cart-icon-list">
+                        <li>
+                          <a href="#">
+                            <img src="assets/images/icon/Icon-cart3.svg" alt="" />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="collection-content text-center">
+                      <h4>
+                        <Link legacyBehavior href={`/shop-details?id=${service.id}`}>
+                          <a>{service.name}</a>
+                        </Link>
+                      </h4>
+                      <div className="price">
+                        <h6>Rs. {service.price || "Contact for price"}</h6>
+                      </div>
+                      <div className="review mb-3">
+                        <ul>
+                          {[...Array(5)].map((_, index) => (
+                            <li key={index}>
+                              <i className={`bi bi-star${index < (service.rating || 5) ? '-fill' : ''}`} />
+                            </li>
+                          ))}
+                        </ul>
+                        <span>({service.review_count || 5})</span>
+                      </div>
+                      <div className="d-flex justify-content-center">
+                        <Link href={`/shop-details?id=${service.id}`} legacyBehavior>
+                          <a className="account-btn">View Details</a>
+                        </Link>
+                      </div>
+                    </div>
                   </div>
-                  <div className="review mb-3">
-                    <ul>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                    </ul>
-                    <span>(50)</span>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <Link href="/shop-details" legacyBehavior>
-                      <a className="account-btn">View Details</a>
-                    </Link>
-                  </div>
-                </div>
+                </SwiperSlide>
+              ))
+            ) : (
+              <div className="col-12 text-center">
+                <p>No other services available from this provider</p>
               </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="collection-card">
-                <div className="collection-img">
-                  <img
-                    className="img-gluid"
-                    src="assets/images/bg/category/h3-collection-01.png"
-                    alt=""
-                  />
-                  <ul className="cart-icon-list">
-                    <li>
-                      <a href="#">
-                        <img src="assets/images/icon/Icon-cart3.svg" alt="" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="collection-content text-center">
-                  <h4>
-                    <Link legacyBehavior href="/shop-details">
-                      <a>Pet Grooming</a>
-                    </Link>
-                  </h4>
-                  <div className="price">
-                    <h6>$25.00</h6>
-                  </div>
-                  <div className="review mb-3">
-                    <ul>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                    </ul>
-                    <span>(50)</span>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <Link href="/shop-details" legacyBehavior>
-                      <a className="account-btn">View Details</a>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide className="swiper-slide">
-              <div className="collection-card">
-                <div className="collection-img">
-                  <img
-                    className="img-gluid"
-                    src="assets/images/bg/category/h3-collection-01.png"
-                    alt=""
-                  />
-                  <ul className="cart-icon-list">
-                    <li>
-                      <a href="#">
-                        <img src="assets/images/icon/Icon-cart3.svg" alt="" />
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div className="collection-content text-center">
-                  <h4>
-                    <Link legacyBehavior href="/shop-details">
-                      <a>Pet Boarding Package</a>
-                    </Link>
-                  </h4>
-                  <div className="price">
-                    <h6>$25.00</h6>
-                  </div>
-                  <div className="review mb-3">
-                    <ul>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                      <li>
-                        <i className="bi bi-star-fill" />
-                      </li>
-                    </ul>
-                    <span>(50)</span>
-                  </div>
-                  <div className="d-flex justify-content-center">
-                    <Link href="/shop-details" legacyBehavior>
-                      <a className="account-btn">View Details</a>
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
+            )}
           </div>
         </Swiper>
       </div>

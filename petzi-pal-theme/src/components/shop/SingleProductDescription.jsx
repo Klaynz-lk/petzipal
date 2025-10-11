@@ -1,6 +1,6 @@
 import React from "react";
 
-function SingleProductDescription() {
+function SingleProductDescription({ service }) {
   return (
     <>
       <div className="row mb-120">
@@ -44,26 +44,32 @@ function SingleProductDescription() {
               aria-labelledby="v-pills-home-tab"
             >
               <div className="description">
-                <p className="para-2 mb-3">
-                  This is a type of food that is specifically formulated and
-                  intended for consumption by pets. It is usually sold in the
-                  form of dry kibble or wet cans, and is designed to meet the
-                  nutritional needs of a variety of different types of pets,
-                  including dogs, cats, and small animals like guinea pigs and
-                  rabbits.
-                </p>
-                <p className="para-2 mb-3">
-                  This food may help from a variety of different ingredients,
-                  including meat, grains, vegetables, and fortified vitamins and
-                  minerals. Some pet food is formulated for specific life
-                  stages, such as puppy or senior, and may contain higher levels
-                  of certain nutrients to support the needs of pets at those
-                  stages of life.
-                </p>
-                <p className="para-2 mb-0">
-                  At the end, also formulated for pets with special dietary
-                  needs, such as those with food allergies or sensitivities.
-                </p>
+                {service?.description ? (
+                  <div>
+                    {service.description.split('\n').map((paragraph, index) => (
+                      <p key={index} className="para-2 mb-3">
+                        {paragraph}
+                      </p>
+                    ))}
+                  </div>
+                ) : (
+                  <div>
+                    <p className="para-2 mb-3">
+                      {service?.name || "Service"} is a professional pet care service 
+                      provided by {service?.provider_name || service?.vet_name || "our experienced team"}. 
+                      We are committed to providing the highest quality care for your beloved pets.
+                    </p>
+                    <p className="para-2 mb-3">
+                      Our service includes professional care, attention to detail, and 
+                      a focus on your pet's comfort and well-being. We understand that 
+                      every pet is unique and requires personalized attention.
+                    </p>
+                    <p className="para-2 mb-0">
+                      Contact us today to learn more about this service and how we can 
+                      help take care of your pet's needs.
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
             

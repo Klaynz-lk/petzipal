@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
-import React, { useReducer } from "react";
+import React, { useReducer, useEffect } from "react";
+
 const initialState = { count: 1 };
 
 function reducer(state, action) {
@@ -8,20 +9,39 @@ function reducer(state, action) {
       return { count: state.count + 1 };
     case "decrement":
       return { count: state.count - 1 };
+    case "set":
+      return { count: action.payload };
     default:
       throw new Error();
   }
 }
-function ProductPriceCount({ price }) {
+
+function ProductPriceCount({ price, quantity, onQuantityChange }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const currentRoute = useRouter().pathname;
+
+  // Update internal state when quantity prop changes
+  useEffect(() => {
+    if (quantity !== undefined) {
+      dispatch({ type: "set", payload: quantity });
+    }
+  }, [quantity]);
+
   const increment = () => {
+    const newCount = state.count + 1;
     dispatch({ type: "increment" });
+    if (onQuantityChange) {
+      onQuantityChange(newCount);
+    }
   };
 
   const decrement = () => {
     if (state.count > 1) {
+      const newCount = state.count - 1;
       dispatch({ type: "decrement" });
+      if (onQuantityChange) {
+        onQuantityChange(newCount);
+      }
     }
   };
   return (
