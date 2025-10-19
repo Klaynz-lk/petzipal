@@ -95,6 +95,11 @@ export const loginUser = async (credentials) => {
       password: credentials.password
     };
 
+    if (!backendUrl) {
+      console.error("Error: NEXT_PUBLIC_BACKEND_URL is not set.");
+      return { success: false, error: "Application is not configured." };
+    }
+
     const response = await fetch(`${backendUrl}/api/v1/user/auth/signin`, {
       method: 'POST',
       headers: {
@@ -106,18 +111,27 @@ export const loginUser = async (credentials) => {
     const data = await response.json();
 
     if (!response.ok) {
+      // Use the error message from the API if available
       throw new Error(data.message || 'Login failed');
     }
 
-    // Save token and user data
-    if (data.token) {
-      saveAuthToken(data.token);
-    }
-    if (data.user) {
-      saveUserData(data.user);
+    // --- START OF CORRECTION ---
+    // The API nests the token and user inside a 'data' object
+    if (data.data && data.data.access_token) {
+      saveAuthToken(data.data.access_token);
+    } else {
+      // Handle case where login is successful but no token is returned
+      throw new Error('Login successful but no authentication token was received.');
     }
 
-    return { success: true, data };
+    if (data.data && data.data.user) {
+      saveUserData(data.data.user);
+    }
+    // --- END OF CORRECTION ---
+
+    // Return the nested data object
+    return { success: true, data: data.data }; 
+
   } catch (error) {
     console.error('Login error:', error);
     return { success: false, error: error.message };

@@ -21,7 +21,7 @@ function signUpPage() {
     address: '',
     password: '',
     confirmPassword: '',
-    role_id: 0,
+    role_id: 0, // This value will be sent
     has_provider_access: false
   });
   const [profilePicture, setProfilePicture] = useState(null);
@@ -134,6 +134,7 @@ function signUpPage() {
         address: formData.address,
         password: formData.password,
         has_provider_access: formData.has_provider_access,
+        role_id: formData.role_id, // <-- THIS IS THE CORRECTED LINE
         ...(profilePictureBase64 && { profile_picture: profilePictureBase64 })
       };
 
