@@ -1,17 +1,21 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import Morphext from "../morphext/Morphext";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 function Banner1() {
+  const router = useRouter();
   const [petService, setPetService] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const searchInputRef = useRef(null);
+  const searchResultsRef = useRef(null);
   const phrases = ["Cart .", "Dog .", "Cat ."];
-
 
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const endpoint = `${backendUrl}/api/v1/pet-services`;
@@ -42,31 +46,79 @@ function Banner1() {
     }
 
     const filteredSuggestions = petService.filter((service) => {
-      const serviceName = service.name?.toLowerCase();
+      const serviceName = service.name?.toLowerCase() || "";
+      const providerName = service.provider_name?.toLowerCase() || service.vet_name?.toLowerCase() || "";
+      const location = service.location?.city?.toLowerCase() || service.location?.name?.toLowerCase() || "";
       const query = searchQuery.toLowerCase();
       
-      return serviceName.includes(query);
+      return (
+        serviceName.includes(query) ||
+        providerName.includes(query) ||
+        location.includes(query)
+      );
     });
 
     setSuggestions(filteredSuggestions);
-    setShowSuggestions(filteredSuggestions.length > 0);
-  }, [searchQuery, petService]);
+    setShowSuggestions(filteredSuggestions.length > 0 && isSearchFocused);
+  }, [searchQuery, petService, isSearchFocused]);
 
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
   };
 
+  const handleSearchFocus = () => {
+    setIsSearchFocused(true);
+    if (suggestions.length > 0) {
+      setShowSuggestions(true);
+    }
+  };
+
+  const handleSearchBlur = () => {
+    // Delay hiding suggestions to allow clicking on them
+    setTimeout(() => {
+      setIsSearchFocused(false);
+      setShowSuggestions(false);
+    }, 200);
+  };
+
   const handleSuggestionClick = (service) => {
-    setSearchQuery(service.name);
+    setSearchQuery("");
     setShowSuggestions(false);
+    setIsSearchFocused(false);
+    router.push(`/shop-details?id=${service.id}`);
   };
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    // Handle search submission here
-    console.log("Searching for:", searchQuery);
+    if (suggestions.length > 0) {
+      // Navigate to first result
+      handleSuggestionClick(suggestions[0]);
+    } else if (searchQuery.trim() !== "") {
+      // Navigate to shop page with search query
+      router.push(`/shop?search=${encodeURIComponent(searchQuery)}`);
+    }
     setShowSuggestions(false);
   };
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchResultsRef.current &&
+        !searchResultsRef.current.contains(event.target) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target)
+      ) {
+        setShowSuggestions(false);
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
 
 
@@ -144,20 +196,15 @@ function Banner1() {
                       <form onSubmit={handleSearchSubmit}>
                         <div className="input-group">
                           <input
+                            ref={searchInputRef}
                             type="text"
                             className="form-control"
                             placeholder="Search services"
                             value={searchQuery}
                             onChange={handleSearchChange}
-                            onFocus={() => {
-                              if (suggestions.length > 0) {
-                                setShowSuggestions(true);
-                              }
-                            }}
-                            onBlur={() => {
-                              // Delay hiding suggestions to allow clicking on them
-                              setTimeout(() => setShowSuggestions(false), 200);
-                            }}
+                            onFocus={handleSearchFocus}
+                            onBlur={handleSearchBlur}
+                            autoComplete="off"
                           />
                           <button className="btn btn-success col-1" type="submit">
                             <i className="bi bi-search" />
@@ -168,6 +215,7 @@ function Banner1() {
                       {/* Suggestions Dropdown */}
                       {showSuggestions && suggestions.length > 0 && (
                         <div 
+                          ref={searchResultsRef}
                           className="suggestions-dropdown"
                           style={{
                             position: 'absolute',
@@ -180,7 +228,7 @@ function Banner1() {
                             borderRadius: '0 0 8px 8px',
                             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
                             zIndex: 1000,
-                            maxHeight: '200px',
+                            maxHeight: '300px',
                             overflowY: 'auto'
                           }}
                         >
@@ -200,12 +248,24 @@ function Banner1() {
                               onMouseLeave={(e) => {
                                 e.target.style.backgroundColor = 'white';
                               }}
-                              onClick={() => handleSuggestionClick(service)}
+                              onMouseDown={(e) => {
+                                e.preventDefault(); // Prevent input blur
+                                handleSuggestionClick(service);
+                              }}
                             >
-                              <div style={{ fontWeight: '500', color: '#333' }}>
+                              <div style={{ fontWeight: '500', color: '#333', fontSize: '14px' }}>
                                 {service.name}
                               </div>
-                              
+                              {service.provider_name || service.vet_name ? (
+                                <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                                  {service.provider_name || service.vet_name}
+                                </div>
+                              ) : null}
+                              {service.location?.city ? (
+                                <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>
+                                  {service.location.city}
+                                </div>
+                              ) : null}
                             </div>
                           ))}
                         </div>

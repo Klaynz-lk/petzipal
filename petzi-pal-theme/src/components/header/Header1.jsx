@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef, useState } from "react";
 /*---------Using reducer mange the active or inactive menu----------*/
 const initialState = {
   activeMenu: "",
@@ -31,8 +31,19 @@ function reducer(state, action) {
 
 function Header1() {
   const currentRoute = useRouter().pathname;
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initialState);
   const headerRef = useRef(null);
+  const searchInputRef = useRef(null);
+  const searchResultsRef = useRef(null);
+  
+  // Search state
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [allServices, setAllServices] = useState([]);
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
+
   const handleScroll = () => {
     const { scrollY } = window;
     dispatch({ type: "setScrollY", payload: scrollY });
@@ -42,6 +53,110 @@ function Header1() {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  // Fetch all services on component mount
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+        const endpoint = `${backendUrl}/api/v1/pet-services`;
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error("Failed to fetch services");
+        const data = await res.json();
+        setAllServices(data);
+      } catch (error) {
+        console.error("Error fetching services:", error);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  // Filter services based on search query
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setSearchResults([]);
+      setShowSearchResults(false);
+      return;
+    }
+
+    const filteredResults = allServices.filter((service) => {
+      const serviceName = service.name?.toLowerCase() || "";
+      const providerName = service.provider_name?.toLowerCase() || service.vet_name?.toLowerCase() || "";
+      const location = service.location?.city?.toLowerCase() || service.location?.name?.toLowerCase() || "";
+      const query = searchQuery.toLowerCase();
+      
+      return (
+        serviceName.includes(query) ||
+        providerName.includes(query) ||
+        location.includes(query)
+      );
+    });
+
+    setSearchResults(filteredResults);
+    setShowSearchResults(filteredResults.length > 0 && isSearchFocused);
+  }, [searchQuery, allServices, isSearchFocused]);
+
+  // Handle search input change
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // Handle search input focus
+  const handleSearchFocus = () => {
+    setIsSearchFocused(true);
+    if (searchResults.length > 0) {
+      setShowSearchResults(true);
+    }
+  };
+
+  // Handle search input blur
+  const handleSearchBlur = () => {
+    // Delay hiding results to allow clicking on them
+    setTimeout(() => {
+      setIsSearchFocused(false);
+      setShowSearchResults(false);
+    }, 200);
+  };
+
+  // Handle clicking on a search result
+  const handleResultClick = (serviceId) => {
+    setSearchQuery("");
+    setShowSearchResults(false);
+    setIsSearchFocused(false);
+    router.push(`/shop-details?id=${serviceId}`);
+  };
+
+  // Handle form submission
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchResults.length > 0) {
+      // Navigate to first result
+      handleResultClick(searchResults[0].id);
+    } else if (searchQuery.trim() !== "") {
+      // Navigate to shop page with search query
+      router.push(`/shop?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        searchResultsRef.current &&
+        !searchResultsRef.current.contains(event.target) &&
+        searchInputRef.current &&
+        !searchInputRef.current.contains(event.target)
+      ) {
+        setShowSearchResults(false);
+        setIsSearchFocused(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -191,8 +306,75 @@ function Header1() {
                     </svg>
                   </a>
                 </Link>
-                <form className="nav__search-form">
-                  <input type="text" placeholder="Search keyword" />
+                <form className="nav__search-form" onSubmit={handleSearchSubmit}>
+                  <div style={{ position: "relative", width: "100%" }}>
+                    <input
+                      ref={searchInputRef}
+                      type="text"
+                      placeholder="Search keyword"
+                      value={searchQuery}
+                      onChange={handleSearchChange}
+                      onFocus={handleSearchFocus}
+                      onBlur={handleSearchBlur}
+                      autoComplete="off"
+                    />
+                    {showSearchResults && searchResults.length > 0 && (
+                      <div
+                        ref={searchResultsRef}
+                        className="search-results-dropdown"
+                        style={{
+                          position: "absolute",
+                          top: "100%",
+                          left: 0,
+                          right: 0,
+                          backgroundColor: "var(--title-color1)",
+                          border: "1px solid #000",
+                          borderTop: "none",
+                          maxHeight: "300px",
+                          overflowY: "auto",
+                          zIndex: 1000,
+                          marginTop: "5px",
+                        }}
+                      >
+                        {searchResults.map((service) => (
+                          <div
+                            key={service.id}
+                            onMouseDown={(e) => {
+                              e.preventDefault(); // Prevent input blur
+                              handleResultClick(service.id);
+                            }}
+                            style={{
+                              padding: "12px 15px",
+                              cursor: "pointer",
+                              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+                              transition: "background-color 0.2s",
+                              color: "var(--white)",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.target.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.backgroundColor = "transparent";
+                            }}
+                          >
+                            <div style={{ fontWeight: "500", fontSize: "14px" }}>
+                              {service.name}
+                            </div>
+                            {service.provider_name || service.vet_name ? (
+                              <div style={{ fontSize: "12px", opacity: 0.8, marginTop: "4px" }}>
+                                {service.provider_name || service.vet_name}
+                              </div>
+                            ) : null}
+                            {service.location?.city ? (
+                              <div style={{ fontSize: "12px", opacity: 0.7, marginTop: "2px" }}>
+                                {service.location.city}
+                              </div>
+                            ) : null}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                   <button type="submit">
                     <svg width={15} height={15} viewBox="0 0 15 15">
                       <path d="M13.8914 12.3212L11.3164 9.74312C11.1877 9.63999 11.0332 9.56265 10.8787 9.56265H10.4667C11.1619 8.6603 11.5997 7.52593 11.5997 6.26265C11.5997 3.32358 9.1792 0.900146 6.2437 0.900146C3.28245 0.900146 0.887695 3.32358 0.887695 6.26265C0.887695 9.22749 3.28245 11.6251 6.2437 11.6251C7.4797 11.6251 8.6127 11.2126 9.5397 10.4908V10.9291C9.5397 11.0837 9.5912 11.2384 9.71995 11.3673L12.2692 13.9197C12.5267 14.1775 12.9129 14.1775 13.1447 13.9197L13.8657 13.1978C14.1232 12.9658 14.1232 12.5791 13.8914 12.3212ZM6.2437 9.56265C4.41545 9.56265 2.9477 8.09312 2.9477 6.26265C2.9477 4.45796 4.41545 2.96265 6.2437 2.96265C8.0462 2.96265 9.5397 4.45796 9.5397 6.26265C9.5397 8.09312 8.0462 9.56265 6.2437 9.56265Z" />
