@@ -1,0 +1,42 @@
+/* Shop Responsive Tweaks */
+
+/* Hide desktop sidebar on mobile/tablet if not already done by bootstrap classes */
+@media (max-width: 991px) {
+    .shop-sidebar {
+        display: none !important;
+    }
+
+    /* Adjust padding for bottom bar */
+    .shop-page {
+        padding-bottom: 80px !important;
+        /* Space for the fixed bottom bar */
+    }
+
+    /* Mobile select dropdowns */
+    .mobile-select-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px !important;
+        margin-bottom: 30px;
+    }
+
+    .multiselect-bar.mobile-select-row {
+        background: transparent;
+        padding: 0;
+        border: none;
+    }
+
+    .mobile-select {
+        height: 50px;
+        border-radius: 10px;
+        border: 1px solid #eee;
+        padding: 0 15px;
+        background-color: white;
+        width: 100%;
+    }
+
+    .multiselect-area {
+        width: 100% !important;
+        justify-content: space-between;
+    }
+}

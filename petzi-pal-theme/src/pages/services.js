@@ -2,30 +2,40 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import Layout from "../layout/Layout";
+import servicesData from "../data/servicesData";
 
 const Services = () => {
-  const [servicesData, setServicesData] = useState([]);
+  //const [servicesData, setServicesData] = useState([]);
+  const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const endpoint = `${backendUrl}/api/v1/pet-service-type`;
+  // const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  // const endpoint = `${backendUrl}/api/v1/pet-service-type`;
+
+  // useEffect(() => {
+  //   const fetchServices = async () => {
+  //     try {
+  //       const res = await fetch(endpoint);
+  //       if (!res.ok) throw new Error("Failed to fetch services");
+  //       const data = await res.json();
+  //       setServicesData(data);
+  //     } catch (error) {
+  //       setError(error.message);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchServices();
+  // }, [endpoint]);
 
   useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const res = await fetch(endpoint);
-        if (!res.ok) throw new Error("Failed to fetch services");
-        const data = await res.json();
-        setServicesData(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchServices();
-  }, [endpoint]);
+    // simulate API delay (optional)
+    setTimeout(() => {
+      setServices(servicesData);
+      setLoading(false);
+    }, 500);
+  }, []);
 
   if (loading) {
     return (
@@ -66,20 +76,21 @@ const Services = () => {
             <div className="row mb-5">
               <div className="col-lg-12">
                 <div className="multiselect-bar d-flex justify-content-end">
-                    <form className="service-search-bar col-md-4 position-relative">
-                      <input
-                        type="text"
-                        className="form-control service-search-input pr-5"
-                        placeholder="Search services..."
-                        aria-label="Search services"
-                      />
-                      <span className="search-icon">
-                        <i className="bi bi-search" />
-                      </span>
-                    </form>
+                  <form className="service-search-bar col-md-4 position-relative">
+                    <input
+                      type="text"
+                      className="form-control service-search-input pr-5"
+                      placeholder="Search services..."
+                      aria-label="Search services"
+                    />
+                    <span className="search-icon">
+                      <i className="bi bi-search" />
+                    </span>
+                  </form>
                 </div>
               </div>
             </div>
+            {/* {servicesData.map((service) */}
             {servicesData.map((service) => (
               <div key={service.id} className="col-lg-3 col-md-4 col-sm-6">
                 <div className="service-card text-center h-100">

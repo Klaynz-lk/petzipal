@@ -1,0 +1,78 @@
+/* Mobile Bottom Bar Styles */
+.mobile-bottom-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #ffffff;
+    padding: 12px 15px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+    /* Soft shadow */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 1000;
+    border-top: 1px solid #f0f0f0;
+}
+
+.mobile-search-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+.mobile-search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    /* Space for icon */
+    border: 1px solid #e0e0e0;
+    border-radius: 50px;
+    /* Fully rounded */
+    background: #f9f9f9;
+    font-family: var(--font-cabin, sans-serif);
+    font-size: 14px;
+    color: var(--title-color1, #333);
+    transition: all 0.3s ease;
+}
+
+.mobile-search-input:focus {
+    background: #ffffff;
+    border-color: var(--primary-color3, #f46f30);
+    box-shadow: 0 0 0 3px rgba(244, 111, 48, 0.1);
+}
+
+.mobile-search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.mobile-filter-btn {
+    background: var(--gradient-color, #FF4F0F);
+    /* Use theme gradient/color */
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-dosis, sans-serif);
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(255, 79, 15, 0.25);
+    transition: transform 0.2s ease;
+}
+
+.mobile-filter-btn:active {
+    transform: scale(0.96);
+}
+
+.mobile-filter-btn i {
+    font-size: 16px;
+}

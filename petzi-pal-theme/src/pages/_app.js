@@ -3,6 +3,8 @@ import { useEffect } from "react";
 
 /*all css import*/
 import "../../styles/main.css";
+import "../../styles/review.css";
+import "../../styles/purchased-services.css";
 
 function MyApp({ Component, pageProps }) {
   useEffect(() => {

@@ -1,0 +1,81 @@
+const purchasedServicesData = [
+  {
+    id: 1,
+    orderId: "ORD-2024-001",
+    serviceName: "Premium Pet Grooming",
+    serviceType: "Pet Grooming",
+    provider: "PetCare Pro",
+    date: "2024-12-10",
+    time: "10:00 AM",
+    price: 25500.00,
+    status: "completed",
+    petName: "Buddy",
+    petType: "Golden Retriever",
+    image: "/assets/images/bg/banner-img.jpg",
+    reviewed: false
+  },
+  {
+    id: 2,
+    orderId: "ORD-2024-002",
+    serviceName: "Health Checkup & Vaccination",
+    serviceType: "Veterinary Care",
+    provider: "VetCare Center",
+    date: "2024-12-08",
+    time: "2:30 PM",
+    price: 36000.00,
+    status: "completed",
+    petName: "Luna",
+    petType: "Persian Cat",
+    image: "/assets/images/bg/banner-img.jpg",
+    reviewed: true,
+    rating: 4
+  },
+  {
+    id: 3,
+    orderId: "ORD-2024-003",
+    serviceName: "Weekend Pet Boarding",
+    serviceType: "Pet Boarding",
+    provider: "Happy Paws Resort",
+    date: "2024-12-05",
+    time: "9:00 AM",
+    price: 180000.00,
+    status: "completed",
+    petName: "Max",
+    petType: "German Shepherd",
+    image: "/assets/images/bg/banner-img.jpg",
+    reviewed: false
+  },
+  {
+    id: 4,
+    orderId: "ORD-2024-004",
+    serviceName: "Daily Dog Walking Service",
+    serviceType: "Dog Walking",
+    provider: "Walk & Play",
+    date: "2024-12-03",
+    time: "4:00 PM",
+    price: 13500.00,
+    status: "completed",
+    petName: "Charlie",
+    petType: "Labrador",
+    image: "/assets/images/bg/banner-img.jpg",
+    reviewed: false
+  },
+  {
+    id: 5,
+    orderId: "ORD-2024-005",
+    serviceName: "Emergency Vet Consultation",
+    serviceType: "Veterinary Care",
+    provider: "24/7 Pet Emergency",
+    date: "2024-11-28",
+    time: "11:45 PM",
+    price: 45000.00,
+    status: "completed",
+    petName: "Bella",
+    petType: "Siamese Cat",
+    image: "/assets/images/bg/banner-img.jpg",
+    reviewed: true,
+    rating: 5
+  }
+];
+
+export default purchasedServicesData;
