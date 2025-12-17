@@ -38,7 +38,7 @@ function Header3() {
   const [userData, setUserData] = useState(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const headerRef = useRef(null);
-  
+
   const handleScroll = () => {
     const { scrollY } = window;
     dispatch({ type: "setScrollY", payload: scrollY });
@@ -463,19 +463,11 @@ function Header3() {
           <div className="nav-right d-flex jsutify-content-end align-items-center">
             <ul>
               <li className="search-btn">
-                <Link legacyBehavior href="#">
-                  <a>
-                    {" "}
-                    <svg
-                      width={15}
-                      height={15}
-                      viewBox="0 0 15 15"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M13.8914 12.3212L11.3164 9.74312C11.1877 9.63999 11.0332 9.56265 10.8787 9.56265H10.4667C11.1619 8.6603 11.5997 7.52593 11.5997 6.26265C11.5997 3.32358 9.1792 0.900146 6.2437 0.900146C3.28245 0.900146 0.887695 3.32358 0.887695 6.26265C0.887695 9.22749 3.28245 11.6251 6.2437 11.6251C7.4797 11.6251 8.6127 11.2126 9.5397 10.4908V10.9291C9.5397 11.0837 9.5912 11.2384 9.71995 11.3673L12.2692 13.9197C12.5267 14.1775 12.9129 14.1775 13.1447 13.9197L13.8657 13.1978C14.1232 12.9658 14.1232 12.5791 13.8914 12.3212ZM6.2437 9.56265C4.41545 9.56265 2.9477 8.09312 2.9477 6.26265C2.9477 4.45796 4.41545 2.96265 6.2437 2.96265C8.0462 2.96265 9.5397 4.45796 9.5397 6.26265C9.5397 8.09312 8.0462 9.56265 6.2437 9.56265Z" />
-                    </svg>
-                  </a>
-                </Link>
+                <a href="#" onClick={(e) => e.preventDefault()}>
+                  <svg width={15} height={15} viewBox="0 0 15 15" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13.8914 12.3212L11.3164 9.74312C11.1877 9.63999 11.0332 9.56265 10.8787 9.56265H10.4667C11.1619 8.6603 11.5997 7.52593 11.5997 6.26265C11.5997 3.32358 9.1792 0.900146 6.2437 0.900146C3.28245 0.900146 0.887695 3.32358 0.887695 6.26265C0.887695 9.22749 3.28245 11.6251 6.2437 11.6251C7.4797 11.6251 8.6127 11.2126 9.5397 10.4908V10.9291C9.5397 11.0837 9.5912 11.2384 9.71995 11.3673L12.2692 13.9197C12.5267 14.1775 12.9129 14.1775 13.1447 13.9197L13.8657 13.1978C14.1232 12.9658 14.1232 12.5791 13.8914 12.3212ZM6.2437 9.56265C4.41545 9.56265 2.9477 8.09312 2.9477 6.26265C2.9477 4.45796 4.41545 2.96265 6.2437 2.96265C8.0462 2.96265 9.5397 4.45796 9.5397 6.26265C9.5397 8.09312 8.0462 9.56265 6.2437 9.56265Z" />
+                  </svg>
+                </a>
                 <form className="nav__search-form">
                   <input
                     type="text"
@@ -496,18 +488,11 @@ function Header3() {
                 </form>
               </li>
               <li>
-                <Link legacyBehavior href="#">
-                  <a>
-                    <svg
-                      width={14}
-                      height={13}
-                      viewBox="0 0 14 13"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M12.4147 1.51371C11.0037 0.302997 8.92573 0.534835 7.61736 1.87434L7.12993 2.38954L6.61684 1.87434C5.33413 0.534835 3.23047 0.302997 1.81948 1.51371C0.203258 2.90473 0.126295 5.37767 1.56294 6.87174L6.53988 12.0237C6.84773 12.3586 7.38647 12.3586 7.69433 12.0237L12.6713 6.87174C14.1079 5.37767 14.0309 2.90473 12.4147 1.51371Z" />
-                    </svg>
-                  </a>
-                </Link>
+                <a href="#" onClick={(e) => e.preventDefault()}>
+                  <svg width={14} height={13} viewBox="0 0 14 13" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.4147 1.51371C11.0037 0.302997 8.92573 0.534835 7.61736 1.87434L7.12993 2.38954L6.61684 1.87434C5.33413 0.534835 3.23047 0.302997 1.81948 1.51371C0.203258 2.90473 0.126295 5.37767 1.56294 6.87174L6.53988 12.0237C6.84773 12.3586 7.38647 12.3586 7.69433 12.0237L12.6713 6.87174C14.1079 5.37767 14.0309 2.90473 12.4147 1.51371Z" />
+                  </svg>
+                </a>
               </li>
               <li>
                 <Link legacyBehavior href="/cart">
@@ -525,16 +510,16 @@ function Header3() {
               </li>
               {isLoggedIn ? (
                 <li className="profile-dropdown">
-                  <div 
+                  <div
                     className="profile-trigger d-flex align-items-center"
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
                     style={{ cursor: 'pointer' }}
                   >
                     <div className="profile-avatar me-2">
                       {userData?.profile_picture ? (
-                        <img 
-                          src={userData.profile_picture} 
-                          alt="Profile" 
+                        <img
+                          src={userData.profile_picture}
+                          alt="Profile"
                           style={{
                             width: '32px',
                             height: '32px',
@@ -543,7 +528,7 @@ function Header3() {
                           }}
                         />
                       ) : (
-                        <div 
+                        <div
                           style={{
                             width: '32px',
                             height: '32px',
@@ -566,9 +551,9 @@ function Header3() {
                     </span>
                     <i className="bi bi-chevron-down ms-1" style={{ fontSize: '12px' }}></i>
                   </div>
-                  
+
                   {showProfileDropdown && (
-                    <div 
+                    <div
                       className="profile-dropdown-menu"
                       style={{
                         position: 'absolute',
@@ -593,10 +578,10 @@ function Header3() {
                       </div>
                       <div className="profile-actions">
                         <Link legacyBehavior href="/profile">
-                          <a 
+                          <a
                             className="dropdown-item d-block px-3 py-2"
-                            style={{ 
-                              textDecoration: 'none', 
+                            style={{
+                              textDecoration: 'none',
                               color: '#333',
                               fontSize: '14px',
                               transition: 'background-color 0.2s'
@@ -609,10 +594,10 @@ function Header3() {
                           </a>
                         </Link>
                         <Link legacyBehavior href="/orders">
-                          <a 
+                          <a
                             className="dropdown-item d-block px-3 py-2"
-                            style={{ 
-                              textDecoration: 'none', 
+                            style={{
+                              textDecoration: 'none',
                               color: '#333',
                               fontSize: '14px',
                               transition: 'background-color 0.2s'
@@ -624,10 +609,10 @@ function Header3() {
                             My Orders
                           </a>
                         </Link>
-                        <div 
+                        <div
                           className="dropdown-item d-block px-3 py-2"
                           onClick={handleLogout}
-                          style={{ 
+                          style={{
                             cursor: 'pointer',
                             color: '#dc3545',
                             fontSize: '14px',

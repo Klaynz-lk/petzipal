@@ -1,18 +1,12 @@
-/* Shop Responsive Tweaks */
-
-/* Hide desktop sidebar on mobile/tablet if not already done by bootstrap classes */
 @media (max-width: 991px) {
     .shop-sidebar {
         display: none !important;
     }
 
-    /* Adjust padding for bottom bar */
     .shop-page {
         padding-bottom: 80px !important;
-        /* Space for the fixed bottom bar */
     }
 
-    /* Mobile select dropdowns */
     .mobile-select-row {
         flex-direction: column;
         align-items: flex-start;
