@@ -1,16 +1,17 @@
-import Link from "next/link";
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import ProductPriceCount from "./ProductPriceCount";
 import { addToCart, isInCart, getCartItem } from "../../utils/cartUtils";
 
 function ProductDetails({ service }) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState(1);
   const [isInCartState, setIsInCartState] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   // Handle service images - if service has multiple images, use them; otherwise use default
   const serviceImages = service?.images || [service?.image].filter(Boolean) || ["assets/images/bg/banner-img.jpg"];
-  
+
   // Ensure we have at least 5 images for the tabs (duplicate if necessary)
   const displayImages = [];
   for (let i = 0; i < 5; i++) {
@@ -34,6 +35,13 @@ function ProductDetails({ service }) {
       setIsInCartState(true);
       setShowSuccessMessage(true);
       setTimeout(() => setShowSuccessMessage(false), 3000);
+    }
+  };
+
+  const handleBuyNow = () => {
+    if (service) {
+      addToCart(service, quantity);
+      router.push("/check-out");
     }
   };
 
@@ -121,7 +129,18 @@ function ProductDetails({ service }) {
               <div className="col-12 mt-2">
                 <div className="model-number d-flex align-items-center gap-2">
                   <span className="fw-semibold">Date:</span>
-                  <input type="date" className="form-control" style={{maxWidth: '180px'}} />
+                  <input type="date" className="form-control" style={{ maxWidth: '180px' }} />
+                </div>
+              </div>
+              <div className="col-12 mt-2">
+                <div className="model-number d-flex align-items-center gap-2">
+                  <span className="fw-semibold">Pet Count:</span>
+                  <select className="form-select" style={{ maxWidth: '180px' }}>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4+</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -130,13 +149,13 @@ function ProductDetails({ service }) {
             </div>
             <div className="shop-quantity d-flex align-items-center justify-content-start mb-20">
               <div className="quantity d-flex align-items-center">
-                <ProductPriceCount 
-                  price={service?.price || 0} 
+                <ProductPriceCount
+                  price={service?.price || 0}
                   quantity={quantity}
                   onQuantityChange={handleQuantityChange}
                 />
               </div>
-              <button 
+              <button
                 className={`primary-btn3 ${isInCartState ? 'btn-success' : ''}`}
                 onClick={handleAddToCart}
                 style={{ marginLeft: '10px' }}
@@ -144,18 +163,18 @@ function ProductDetails({ service }) {
                 {isInCartState ? 'Added to Cart' : 'Add to Cart'}
               </button>
             </div>
-            
+
             {showSuccessMessage && (
               <div className="alert alert-success mb-3" style={{ padding: '8px 12px', fontSize: '14px' }}>
                 <i className="bi bi-check-circle me-2"></i>
                 Service added to cart successfully!
               </div>
             )}
-            
+
             <div className="buy-now-btn">
-              <Link legacyBehavior href="/cart">
-                <a>Buy Now</a>
-              </Link>
+              <button onClick={handleBuyNow} className="primary-btn3 button-hover w-100">
+                Buy Now
+              </button>
             </div>
           </div>
         </div>

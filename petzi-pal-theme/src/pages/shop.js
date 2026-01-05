@@ -250,8 +250,8 @@ function Shop() {
                         value={selectedService}
                         onChange={(e) => setSelectedService(e.target.value)}
                       >
-                        <option value="" disabled>
-                          Select Service
+                        <option value="">
+                          All Services
                         </option>
                         {loading ? (
                           <option disabled>Loading services...</option>

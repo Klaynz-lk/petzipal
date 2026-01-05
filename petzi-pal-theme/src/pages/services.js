@@ -10,32 +10,25 @@ const Services = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-  // const endpoint = `${backendUrl}/api/v1/pet-service-type`;
-
-  // useEffect(() => {
-  //   const fetchServices = async () => {
-  //     try {
-  //       const res = await fetch(endpoint);
-  //       if (!res.ok) throw new Error("Failed to fetch services");
-  //       const data = await res.json();
-  //       setServicesData(data);
-  //     } catch (error) {
-  //       setError(error.message);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchServices();
-  // }, [endpoint]);
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const endpoint = `${backendUrl}/api/v1/pet-service-type`;
 
   useEffect(() => {
-    // simulate API delay (optional)
-    setTimeout(() => {
-      setServices(servicesData);
-      setLoading(false);
-    }, 500);
-  }, []);
+    const fetchServices = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(endpoint);
+        if (!res.ok) throw new Error("Failed to fetch services");
+        const data = await res.json();
+        setServices(data);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchServices();
+  }, [endpoint]);
 
   if (loading) {
     return (
@@ -88,14 +81,16 @@ const Services = () => {
               </div>
             </div>
             {/* {servicesData.map((service) */}
-            {servicesData.map((service) => (
-              <div key={service.id} className="col-lg-3 col-md-4 col-sm-6">
+            {services.map((service) => (
+              <div key={service.id} className="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div className="service-card text-center h-100">
-                  <img
-                    src={service.image}
-                    alt={service.name}
-                    className="img-fluid service-img mb-3"
-                  />
+                  <div className="service-img-wrapper mb-3">
+                    <img
+                      src={service.image || "/assets/images/bg/banner-img.jpg"}
+                      alt={service.name}
+                      className="img-fluid service-img"
+                    />
+                  </div>
                   <h3 className="service-title mb-4">{service.name}</h3>
                   <Link href={`/shop?service=${service.id}`} legacyBehavior>
                     <a className="account-btn">View Services</a>

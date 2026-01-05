@@ -168,15 +168,7 @@ function Banner1() {
                   {/* Search Bar with Suggestions */}
                   <div className="row align-items-center mt-4 g-2 mb-4">
                     <div className="col-md-3 col-12 mb-2 mb-md-0">
-                      <select className="form-select" defaultValue="">
-                        <option value="" disabled>
-                          Pet Count
-                        </option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        <option value="4">4+</option>
-                      </select>
+                      <input type="date" className="form-control" />
                     </div>
                     <div className="col-md-3 col-12 mb-2 mb-md-0">
                       <select className="form-select" defaultValue="">
