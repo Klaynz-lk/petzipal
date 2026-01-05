@@ -1,42 +1,72 @@
 [
   {
     "id": 2,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/01.jpg",
+    "smallimage": "assets/images/gallery/01.jpg"
   },
   {
     "id": 3,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/02.jpg",
+    "smallimage": "assets/images/gallery/02.jpg"
   },
   {
     "id": 4,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/03.jpg",
+    "smallimage": "assets/images/gallery/03.jpg"
   },
   {
     "id": 5,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/04.jpg",
+    "smallimage": "assets/images/gallery/04.jpg"
   },
   {
     "id": 6,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/05.jpg",
+    "smallimage": "assets/images/gallery/05.jpg"
   },
   {
     "id": 7,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/06.jpg",
+    "smallimage": "assets/images/gallery/06.jpg"
   },
   {
     "id": 8,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/07.jpg",
+    "smallimage": "assets/images/gallery/07.jpg"
   },
   {
     "id": 9,
-    "imageBig": "assets/images/bg/banner-img.jpg",
-    "smallimage": "assets/images/bg/banner-img.jpg"
+    "imageBig": "assets/images/gallery/08.jpg",
+    "smallimage": "assets/images/gallery/08.jpg"
+  },
+  {
+    "id": 10,
+    "imageBig": "assets/images/gallery/09.jpg",
+    "smallimage": "assets/images/gallery/09.jpg"
+  },
+  {
+    "id": 11,
+    "imageBig": "assets/images/gallery/10.jpg",
+    "smallimage": "assets/images/gallery/10.jpg"
+  },
+  {
+    "id": 12,
+    "imageBig": "assets/images/gallery/11.jpg",
+    "smallimage": "assets/images/gallery/11.jpg"
+  },
+  {
+    "id": 13,
+    "imageBig": "assets/images/gallery/12.jpg",
+    "smallimage": "assets/images/gallery/12.jpg"
+  },
+  {
+    "id": 14,
+    "imageBig": "assets/images/gallery/13.jpg",
+    "smallimage": "assets/images/gallery/13.jpg"
+  },
+  {
+    "id": 14,
+    "imageBig": "assets/images/gallery/14.jpg",
+    "smallimage": "assets/images/gallery/14.jpg"
   }
 ]

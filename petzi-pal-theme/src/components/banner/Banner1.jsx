@@ -15,7 +15,7 @@ function Banner1() {
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const searchInputRef = useRef(null);
   const searchResultsRef = useRef(null);
-  const phrases = ["Cart .", "Dog .", "Cat ."];
+  const phrases = ["Safe .", "Easy .", "Rewarding ."];
 
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   const endpoint = `${backendUrl}/api/v1/pet-services`;
@@ -28,7 +28,7 @@ function Banner1() {
         const data = await res.json();
         setPetService(data);
         console.log(data);
-      }catch (error) {
+      } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
@@ -47,10 +47,16 @@ function Banner1() {
 
     const filteredSuggestions = petService.filter((service) => {
       const serviceName = service.name?.toLowerCase() || "";
-      const providerName = service.provider_name?.toLowerCase() || service.vet_name?.toLowerCase() || "";
-      const location = service.location?.city?.toLowerCase() || service.location?.name?.toLowerCase() || "";
+      const providerName =
+        service.provider_name?.toLowerCase() ||
+        service.vet_name?.toLowerCase() ||
+        "";
+      const location =
+        service.location?.city?.toLowerCase() ||
+        service.location?.name?.toLowerCase() ||
+        "";
       const query = searchQuery.toLowerCase();
-      
+
       return (
         serviceName.includes(query) ||
         providerName.includes(query) ||
@@ -120,8 +126,6 @@ function Banner1() {
     };
   }, []);
 
-
-
   return (
     <div className="hero-style-1">
       <div className="container pt-120">
@@ -138,8 +142,8 @@ function Banner1() {
                     </ul>
                   </div>
                   <h1 className="mb-5">
-                    To Ensure Perfect
-                    <br /> Service Of Your{" "}
+                    Sri Lanka’s Pet Care Hub
+                    <br /> {" "}
                     <Morphext
                       animation="fadeInLeft"
                       speed="3000"
@@ -154,17 +158,13 @@ function Banner1() {
                     </div>
                   </div>
                   <h5 className="col-12 banner-desc">
-                    Welcome to PetziPal, your trusted partner in pet care!
-                    Whether you have a playful pup, a curious cat, or any furry
-                    friend, we make pet parenting simple and joyful. Discover
-                    expert advice, book trusted services, and find everything
-                    your pet needs to thrive—all in one place. With PetziPal,
-                    your pet's happiness and well-being always come first.
+                    Care for your pets, earn rewards, and join us in caring for
+                    Sri Lanka’s street animals
                   </h5>
                   {/* Dropdowns and Search Bar Row */}
                   {loading && <p>Loading pet services...</p>}
                   {error && <p style={{ color: "red" }}>{error}</p>}
-                  
+
                   {/* Search Bar with Suggestions */}
                   <div className="row align-items-center mt-4 g-2 mb-4">
                     <div className="col-md-3 col-12 mb-2 mb-md-0">
@@ -206,30 +206,33 @@ function Banner1() {
                             onBlur={handleSearchBlur}
                             autoComplete="off"
                           />
-                          <button className="btn btn-success col-1" type="submit">
+                          <button
+                            className="btn btn-success col-1"
+                            type="submit"
+                          >
                             <i className="bi bi-search" />
                           </button>
                         </div>
                       </form>
-                      
+
                       {/* Suggestions Dropdown */}
                       {showSuggestions && suggestions.length > 0 && (
-                        <div 
+                        <div
                           ref={searchResultsRef}
                           className="suggestions-dropdown"
                           style={{
-                            position: 'absolute',
-                            top: '100%',
+                            position: "absolute",
+                            top: "100%",
                             left: 0,
                             right: 0,
-                            backgroundColor: 'white',
-                            border: '1px solid #ddd',
-                            borderTop: 'none',
-                            borderRadius: '0 0 8px 8px',
-                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                            backgroundColor: "white",
+                            border: "1px solid #ddd",
+                            borderTop: "none",
+                            borderRadius: "0 0 8px 8px",
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                             zIndex: 1000,
-                            maxHeight: '300px',
-                            overflowY: 'auto'
+                            maxHeight: "300px",
+                            overflowY: "auto",
                           }}
                         >
                           {suggestions.map((service) => (
@@ -237,32 +240,50 @@ function Banner1() {
                               key={service.id}
                               className="suggestion-item"
                               style={{
-                                padding: '12px 16px',
-                                cursor: 'pointer',
-                                borderBottom: '1px solid #f0f0f0',
-                                transition: 'background-color 0.2s'
+                                padding: "12px 16px",
+                                cursor: "pointer",
+                                borderBottom: "1px solid #f0f0f0",
+                                transition: "background-color 0.2s",
                               }}
                               onMouseEnter={(e) => {
-                                e.target.style.backgroundColor = '#f8f9fa';
+                                e.target.style.backgroundColor = "#f8f9fa";
                               }}
                               onMouseLeave={(e) => {
-                                e.target.style.backgroundColor = 'white';
+                                e.target.style.backgroundColor = "white";
                               }}
                               onMouseDown={(e) => {
                                 e.preventDefault(); // Prevent input blur
                                 handleSuggestionClick(service);
                               }}
                             >
-                              <div style={{ fontWeight: '500', color: '#333', fontSize: '14px' }}>
+                              <div
+                                style={{
+                                  fontWeight: "500",
+                                  color: "#333",
+                                  fontSize: "14px",
+                                }}
+                              >
                                 {service.name}
                               </div>
                               {service.provider_name || service.vet_name ? (
-                                <div style={{ fontSize: '12px', color: '#666', marginTop: '4px' }}>
+                                <div
+                                  style={{
+                                    fontSize: "12px",
+                                    color: "#666",
+                                    marginTop: "4px",
+                                  }}
+                                >
                                   {service.provider_name || service.vet_name}
                                 </div>
                               ) : null}
                               {service.location?.city ? (
-                                <div style={{ fontSize: '12px', color: '#888', marginTop: '2px' }}>
+                                <div
+                                  style={{
+                                    fontSize: "12px",
+                                    color: "#888",
+                                    marginTop: "2px",
+                                  }}
+                                >
                                   {service.location.city}
                                 </div>
                               ) : null}

@@ -16,11 +16,8 @@ function Footer1() {
                   <img src="assets/images/icon/phone-icon.svg" alt="" />
                 </div>
                 <div className="hotline-info">
-                  <h6 className="mb-10">
-                    <a href="tel:+8801761111456">+880 176 1111 456</a>
-                  </h6>
-                  <h6>
-                    <a href="tel:+8801701111000">+880 170 1111 000</a>
+                  <h6 className="">
+                    <a href="tel:+94775437880">+94 77 5437 880</a>
                   </h6>
                 </div>
               </div>
@@ -29,11 +26,8 @@ function Footer1() {
                   <img src="assets/images/icon/envelope.svg" alt="" />
                 </div>
                 <div className="email-info">
-                  <h6 className="mb-10">
-                    <a href="mailto:info@example.com">info@example.com</a>
-                  </h6>
-                  <h6>
-                    <a href="mailto:info@support.com">info@support.com</a>
+                  <h6 className="">
+                    <a href="mailto:hello@petzipal.com">hello@petzipal.com</a>
                   </h6>
                 </div>
               </div>
@@ -43,10 +37,10 @@ function Footer1() {
                 </div>
                 <div className="email-info">
                   <h6 className="mb-10">
-                    <a>168/170, Avenue 01, Mirpur</a>
+                    <a>Abbas Building, </a>
                   </h6>
                   <h6>
-                    <a>DOHS, Bangladesh</a>
+                    <a>Colombo Street, Kandy.</a>
                   </h6>
                 </div>
               </div>
@@ -55,38 +49,29 @@ function Footer1() {
           <div className="col-lg-6 d-flex align-items-center order-lg-2 order-1 justify-content-sm-center justify-content-start">
             <div className="footer-items">
               <h2>
-                want <span>to keep</span>
+                Every pet deserves <span>caring hands and a loving home</span>
                 <br />
-                your pet in, <span>our center</span>?
+                that’s what <span>PetziPal stands for.</span>
               </h2>
-              <div
-                className={
-                  currentRouter === "/index2"
-                    ? "book-btn2 d-flex justify-content-center text-center"
-                    : "book-btn"
-                }
-              >
-                <Link legacyBehavior href="/services">
-                  <a
-                    className={
-                      currentRouter === "/index"
-                        ? "primary-btn2"
-                        : "primary-btn1"
-                    }
-                  >
-                    Book Now
-                  </a>
-                </Link>
-              </div>
             </div>
           </div>
           <div className="col-lg-3 col-sm-6 d-flex justify-content-sm-end justify-content-start order-3">
             <div className="footer-items opening-time">
-              <h3>Usefull Links</h3>
-              <h6 className="mb-25">About</h6>
-              <h6 className="mb-25">Services</h6>
-              <h6 className="mb-25">Blog</h6>
-              <h6>Contact</h6>
+              <div className="usefull-links">
+                <h3>Usefull Links</h3>
+                <h6 className="mb-25">
+                  <a>About</a>
+                </h6>
+                <h6 className="mb-25">
+                  <a>Services</a>
+                </h6>
+                <h6 className="mb-25">
+                  <a>Blog</a>
+                </h6>
+                <h6 className="">
+                  <a>Contact</a>
+                </h6>
+              </div>
               <ul className="social-icons">
                 <li>
                   <a href="https://www.facebook.com/">

@@ -70,7 +70,7 @@ const Services = () => {
     <Layout>
       <Breadcrumb pageName="Services" pageTitle="Services" />
       <section className="service-section section-padding">
-        <div className="container pt-120 mb-120">
+        <div className="container pt-4 mb-100">
           <div className="row justify-content-center">
             {/* Search */}
             <div className="row mb-5">
@@ -83,9 +83,6 @@ const Services = () => {
                       placeholder="Search services..."
                       aria-label="Search services"
                     />
-                    <span className="search-icon">
-                      <i className="bi bi-search" />
-                    </span>
                   </form>
                 </div>
               </div>

@@ -7,6 +7,7 @@ import SwiperCore, {
   Pagination,
 } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 SwiperCore.use([Navigation, Pagination, Autoplay, EffectFade]);
 
 function Home1Service() {
@@ -14,8 +15,9 @@ function Home1Service() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // ✅ Only change: use service-types API
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
-  const endpoint = `${backendUrl}/api/v1/pet-services`;
+  const endpoint = `${backendUrl}/api/v1/pet-service-type`;
 
   useEffect(() => {
     const fetchServiceTypes = async () => {
@@ -24,18 +26,18 @@ function Home1Service() {
         if (!res.ok) throw new Error("Failed to fetch service types");
         const data = await res.json();
         setServiceTypes(data);
-      } catch (error) {
-        setError(error.message);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
     fetchServiceTypes();
   }, [endpoint]);
+
   const serviceSlider = {
     slidesPerView: "auto",
     spaceBetween: 24,
-    // centeredSlides: true,
     loop: true,
     speed: 1500,
     autoplay: {
@@ -46,30 +48,28 @@ function Home1Service() {
       prevEl: ".prev-btn-1",
     },
     breakpoints: {
-      280: {
-        slidesPerView: 1,
-        spaceBetween: 15,
-      },
-      480: {
-        slidesPerView: 1,
-      },
-      768: {
-        slidesPerView: 2,
-      },
-      992: {
-        slidesPerView: 3,
-      },
-      1200: {
-        slidesPerView: 4,
-      },
-      1400: {
-        slidesPerView: 4,
-      },
-      1600: {
-        slidesPerView: 4,
-      },
+      280: { slidesPerView: 1, spaceBetween: 15 },
+      480: { slidesPerView: 1 },
+      768: { slidesPerView: 2 },
+      992: { slidesPerView: 3 },
+      1200: { slidesPerView: 4 },
+      1400: { slidesPerView: 4 },
+      1600: { slidesPerView: 4 },
     },
   };
+
+  // Default icon mapping
+  const getServiceIcon = (serviceName) => {
+    const name = serviceName.toLowerCase();
+    if (name.includes("daycare"))
+      return "assets/images/icon/daycare-center2.svg";
+    if (name.includes("grooming")) return "assets/images/icon/grooming2.svg";
+    if (name.includes("boarding")) return "assets/images/icon/boarding2.svg";
+    if (name.includes("veterinary") || name.includes("vet"))
+      return "assets/images/icon/veterinary2.svg";
+    return "assets/images/icon/daycare-center2.svg"; // default icon
+  };
+
   return (
     <div className="h1-service-area pt-120 mb-120">
       <div className="container">
@@ -81,10 +81,12 @@ function Home1Service() {
                 Services
                 <img src="assets/images/icon/section-vec-r1.svg" alt="" />
               </span>
-              <h2>Experience our worship</h2>
+              <h2>Find and Book the Best Pet Services</h2>
             </div>
           </div>
         </div>
+
+        {/* Slider buttons */}
         <div className="row d-sm-flex d-none">
           <div className="col-lg-12">
             <div className="swiper-btn-wrap d-flex align-items-center justify-content-between">
@@ -100,17 +102,20 @@ function Home1Service() {
             </div>
           </div>
         </div>
+
         <div className="row">
           {loading && (
             <div className="col-12 text-center">
               <p>Loading service types...</p>
             </div>
           )}
+
           {error && (
             <div className="col-12 text-center">
               <p style={{ color: "red" }}>Error: {error}</p>
             </div>
           )}
+
           {!loading && !error && (
             <Swiper {...serviceSlider} className="swiper home1-services-slider">
               <div className="swiper-wrapper">
@@ -119,16 +124,6 @@ function Home1Service() {
                   if (index === 1) cardClasses.push("two");
                   if (index === 2) cardClasses.push("three");
                   if (index === 3) cardClasses.push("four");
-
-                  // Default icon mapping - you can customize this based on your service types
-                  const getServiceIcon = (serviceName) => {
-                    const name = serviceName.toLowerCase();
-                    if (name.includes("daycare")) return "assets/images/icon/daycare-center2.svg";
-                    if (name.includes("grooming")) return "assets/images/icon/grooming2.svg";
-                    if (name.includes("boarding")) return "assets/images/icon/boarding2.svg";
-                    if (name.includes("veterinary") || name.includes("vet")) return "assets/images/icon/veterinary2.svg";
-                    return "assets/images/icon/daycare-center2.svg"; // default icon
-                  };
 
                   return (
                     <SwiperSlide key={service.id} className="swiper-slide">
@@ -148,10 +143,16 @@ function Home1Service() {
                             </Link>
                           </h3>
                         </div>
-                        <Link legacyBehavior href={`/shop?service=${service.id}`}>
+                        <Link
+                          legacyBehavior
+                          href={`/shop?service=${service.id}`}
+                        >
                           <a className="more-btn">
                             More Details
-                            <img src="assets/images/icon/btn-arrow1.svg" alt="" />
+                            <img
+                              src="assets/images/icon/btn-arrow1.svg"
+                              alt=""
+                            />
                           </a>
                         </Link>
                       </div>

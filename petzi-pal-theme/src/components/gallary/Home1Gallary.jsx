@@ -32,28 +32,13 @@ function Home1Gallary() {
         prevEl: ".prev-btn-3",
       },
       breakpoints: {
-        280: {
-          slidesPerView: 2,
-          spaceBetween: 10,
-        },
-        480: {
-          slidesPerView: 4,
-        },
-        768: {
-          slidesPerView: 5,
-        },
-        992: {
-          slidesPerView: 6,
-        },
-        1200: {
-          slidesPerView: 7,
-        },
-        1400: {
-          slidesPerView: 8,
-        },
-        1600: {
-          slidesPerView: 8,
-        },
+        280: { slidesPerView: 2, spaceBetween: 10 },
+        480: { slidesPerView: 4 },
+        768: { slidesPerView: 6 },
+        992: { slidesPerView: 8 },
+        1200: { slidesPerView: 10 },
+        1400: { slidesPerView: 12 },
+        1600: { slidesPerView: 14 },
       },
     };
   }, []);

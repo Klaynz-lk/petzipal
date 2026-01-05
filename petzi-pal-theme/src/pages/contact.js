@@ -4,19 +4,19 @@ import Layout from "../layout/Layout";
 
 function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -26,10 +26,10 @@ function Contact() {
     setSubmitStatus(null);
 
     try {
-      const response = await fetch('/api/send-email', {
-        method: 'POST',
+      const response = await fetch("/api/send-email", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
@@ -37,16 +37,16 @@ function Contact() {
       const result = await response.json();
 
       if (result.success) {
-        setSubmitStatus({ type: 'success', message: result.message });
-        setFormData({ name: '', email: '', subject: '', message: '' });
+        setSubmitStatus({ type: "success", message: result.message });
+        setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
-        setSubmitStatus({ type: 'error', message: result.message });
+        setSubmitStatus({ type: "error", message: result.message });
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'Failed to send message. Please try again later.' 
+      console.error("Error submitting form:", error);
+      setSubmitStatus({
+        type: "error",
+        message: "Failed to send message. Please try again later.",
       });
     } finally {
       setIsSubmitting(false);
@@ -69,24 +69,20 @@ function Contact() {
                       </div>
                       <div className="info">
                         <h6>
-                          <a href="tel:+012-3456-789102">+012-3456-789102</a>
-                        </h6>
-                        <h6>
-                          <a href="tel:+012-3456-789102">+012-3456-789102</a>
+                          <a href="tel:+94775437880">+94 77 5437 880</a>
                         </h6>
                       </div>
                     </div>
                     <div className="location">
-                      <h3>Call Us Now</h3>
+                      <h3>Find Us Now</h3>
                       <div className="icon">
                         <img src="assets/images/icon/location4.svg" alt="" />
                       </div>
                       <div className="info">
                         <h6>
                           <a href="#">
-                            168/170, Ave 01, Mirpur,
-                            <br />
-                            Dhaka, Bangladesh
+                            Abbas Building, <br />
+                            Colombo Street, Kandy.
                           </a>
                         </h6>
                       </div>
@@ -96,16 +92,30 @@ function Contact() {
                 <div className="col-lg-7">
                   <div className="contact-form">
                     <h2>Have Any Questions</h2>
-                    
+
                     {submitStatus && (
-                      <div 
-                        className={`alert ${submitStatus.type === 'success' ? 'alert-success' : 'alert-danger'} mb-4`}
+                      <div
+                        className={`alert ${
+                          submitStatus.type === "success"
+                            ? "alert-success"
+                            : "alert-danger"
+                        } mb-4`}
                         style={{
-                          padding: '12px 16px',
-                          borderRadius: '4px',
-                          backgroundColor: submitStatus.type === 'success' ? '#d4edda' : '#f8d7da',
-                          color: submitStatus.type === 'success' ? '#155724' : '#721c24',
-                          border: `1px solid ${submitStatus.type === 'success' ? '#c3e6cb' : '#f5c6cb'}`
+                          padding: "12px 16px",
+                          borderRadius: "4px",
+                          backgroundColor:
+                            submitStatus.type === "success"
+                              ? "#d4edda"
+                              : "#f8d7da",
+                          color:
+                            submitStatus.type === "success"
+                              ? "#155724"
+                              : "#721c24",
+                          border: `1px solid ${
+                            submitStatus.type === "success"
+                              ? "#c3e6cb"
+                              : "#f5c6cb"
+                          }`,
                         }}
                       >
                         {submitStatus.message}
@@ -116,10 +126,10 @@ function Contact() {
                       <div className="row">
                         <div className="col-lg-12 mb-40">
                           <div className="form-inner">
-                            <input 
-                              type="text" 
+                            <input
+                              type="text"
                               name="name"
-                              placeholder="Enter your name" 
+                              placeholder="Enter your name"
                               value={formData.name}
                               onChange={handleInputChange}
                               required
@@ -128,10 +138,10 @@ function Contact() {
                         </div>
                         <div className="col-lg-6 mb-40">
                           <div className="form-inner">
-                            <input 
-                              type="email" 
+                            <input
+                              type="email"
                               name="email"
-                              placeholder="Enter your email" 
+                              placeholder="Enter your email"
                               value={formData.email}
                               onChange={handleInputChange}
                               required
@@ -140,10 +150,10 @@ function Contact() {
                         </div>
                         <div className="col-lg-6 mb-40">
                           <div className="form-inner">
-                            <input 
-                              type="text" 
+                            <input
+                              type="text"
                               name="subject"
-                              placeholder="Subject" 
+                              placeholder="Subject"
                               value={formData.subject}
                               onChange={handleInputChange}
                               required
@@ -164,16 +174,18 @@ function Contact() {
                         </div>
                         <div className="col-lg-12">
                           <div className="form-inner">
-                            <button 
+                            <button
                               type="submit"
                               className="primary-btn1"
                               disabled={isSubmitting}
-                              style={{ 
+                              style={{
                                 opacity: isSubmitting ? 0.7 : 1,
-                                cursor: isSubmitting ? 'not-allowed' : 'pointer'
+                                cursor: isSubmitting
+                                  ? "not-allowed"
+                                  : "pointer",
                               }}
                             >
-                              {isSubmitting ? 'Sending...' : 'Send Message'} 
+                              {isSubmitting ? "Sending..." : "Send Message"}
                               <i className="bi bi-arrow-right" />
                             </button>
                           </div>

@@ -1424,7 +1424,7 @@ header.style-1 .header-logo {
   }
 }
 header.style-1 .header-logo img {
-  max-width: 50px;
+  max-width: 60px;
 }
 header.style-1 .menu-close-btn i {
   color: var(--white);
@@ -5597,6 +5597,14 @@ a.ui-button:active,
 /*=======================================
  7. Home One Gallery
 =======================================*/
+.gallery-img-area .gallery-img img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+}
+
 .gallery-img-area .gallery2-img {
   position: relative;
 }
@@ -5681,6 +5689,17 @@ footer .footer-items .email .email-info h6 a {
   font-family: var(--font-cabin);
   letter-spacing: 0.03em;
   transition: 0.35s;
+}
+footer .footer-items .usefull-links h6 a {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #253d4e;
+  font-family: var(--font-cabin);
+  letter-spacing: 0.03em;
+  transition: 0.35s;
+}
+footer .footer-items .usefull-links h6 a:hover {
+  color: var(--primary-color3);
 }
 footer .footer-items .hotline .hotline-info h6 a:hover,
 footer .footer-items .hotline .email-info h6 a:hover,
@@ -12318,7 +12337,7 @@ footer.style2 .social-area ul li:hover a i {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35); /* adjust 0.35 to make darker/lighter */
+  background: rgba(0, 0, 0, 0.4); /* adjust 0.35 to make darker/lighter */
   z-index: 0;
 }
 
@@ -13301,7 +13320,11 @@ select#duration:focus {
 
 /* --- Banner Description Highlight --- */
 .banner-desc {
-  background: linear-gradient(90deg, #f8fafc 60%, #e3f0ff 100%);
+  background: linear-gradient(
+  90deg,
+  rgba(248, 250, 252, 0.6),
+  rgba(227, 240, 255, 0.6)
+  );
   border-left: 5px solid #FF4F0F;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0,123,255,0.06);
@@ -13332,7 +13355,6 @@ select#duration:focus {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: inline-block;
-  margin-left: 8px;
 }
 @media (max-width: 767.98px) {
   .logo-name {

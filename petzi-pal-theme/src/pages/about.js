@@ -1,5 +1,5 @@
 import React from "react";
-import Home1About from "../components/about/Home1About";
+import Home1About from "../components/about/AboutUs";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import ChooseUs from "../components/chooseUs/ChooseUs";
 import AboutService from "../components/service/AboutService";
@@ -9,10 +9,10 @@ function AboutPage() {
   return (
     <>
       <Layout>
-        <Breadcrumb pageName="About Me" pageTitle="About Me" />
+        <Breadcrumb pageName="About Us" pageTitle="About Us" />
         <Home1About />
-        <AboutService />
-        <ChooseUs />
+        {/* <AboutService /> */}
+        {/* <ChooseUs /> */}
       </Layout>
     </>
   );

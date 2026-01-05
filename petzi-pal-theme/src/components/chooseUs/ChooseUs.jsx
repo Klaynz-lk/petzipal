@@ -9,17 +9,17 @@ function ChooseUs() {
             <div className="section-title1">
               <span>
                 <img src="assets/images/icon/section-vec-l1.svg" alt="" />
-                Why Choose Us
+                Why Choose PetziPal
                 <img src="assets/images/icon/section-vec-r1.svg" alt="" />
               </span>
-              <h2>we provide the best care services.</h2>
+              <h2>We care like family.</h2>
             </div>
             <div className="choose-content">
               <p>
-                At PetziPal, we go beyond basic pet care. Our team is passionate
-                about providing personalized attention, expert guidance, and a
-                safe, loving environment for every pet. We understand that your
-                furry friends are family, and we treat them as our own.
+                At PetziPal, we go beyond just connecEng pet owners and service
+                providers — we create a trusted community built on love, care,
+                and compassion. Every furry friend deserves the best, and we’re
+                here to make pet care simple, safe, and rewarding for everyone.
               </p>
               <div className="accordion" id="accordionExample">
                 <div className="accordion-item">
@@ -32,7 +32,7 @@ function ChooseUs() {
                       aria-expanded="true"
                       aria-controls="collapseOne"
                     >
-                      01. What makes PetziPal different?
+                      01. What makes PetziPal special?
                     </button>
                   </h2>
                   <div
@@ -42,10 +42,12 @@ function ChooseUs() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body">
-                      We combine technology, compassion, and expertise to
-                      deliver a seamless experience for pets and owners. Our
-                      platform offers easy booking, real-time updates, and a
-                      handpicked team of certified professionals.
+                      We’re Sri Lanka’s first complete pet care hub, bringing
+                      together trusted service providers, verified reviews, and
+                      a rewarding experience — all in one place. Our pla\orm
+                      blends technology, transparency, and heart, ensuring your
+                      pet always gets the best care while you enjoy peace of
+                      mind.
                     </div>
                   </div>
                 </div>
@@ -59,7 +61,7 @@ function ChooseUs() {
                       aria-expanded="false"
                       aria-controls="collapseTwo"
                     >
-                      02. How do you ensure pet safety?
+                      02. How do we ensure safety and trust?
                     </button>
                   </h2>
                   <div
@@ -69,10 +71,11 @@ function ChooseUs() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body">
-                      Every PetziPal service provider is background-checked and
-                      trained in pet first aid. We use secure facilities,
-                      monitor all activities, and keep you informed every step
-                      of the way.
+                      Every PetziPal service provider is verified,
+                      background-checked, and reviewed by real pet owners. We
+                      ensure safe pracEces, professional standards, and honest
+                      feedback — so you can confidently choose who cares for
+                      your pet.
                     </div>
                   </div>
                 </div>
@@ -86,7 +89,7 @@ function ChooseUs() {
                       aria-expanded="false"
                       aria-controls="collapseThree"
                     >
-                      03. What services do you offer?
+                      03. What services can you find on PetziPal?
                     </button>
                   </h2>
                   <div
@@ -96,10 +99,11 @@ function ChooseUs() {
                     data-bs-parent="#accordionExample"
                   >
                     <div className="accordion-body">
-                      From daily walks and pet sitting to grooming, training,
-                      and vet visits, PetziPal covers all your pet’s needs. We
-                      tailor our services to fit your schedule and your pet’s
-                      personality.
+                      From grooming and pet si`ng to training and vet visits,
+                      PetziPal connects you with reliable providers across
+                      Colombo 1–12, Dehiwala, and Mount Lavinia. You can book
+                      services based on availability, read genuine reviews, and
+                      even earn reward points for every booking.
                     </div>
                   </div>
                 </div>
@@ -121,7 +125,7 @@ function ChooseUs() {
               </div>
               <img
                 className="img-fluid"
-                src="assets/images/bg/pet-care.jpg"
+                src="assets/images/why-choose-us-img.jpg"
                 alt="choose-img"
               />
             </div>
@@ -137,8 +141,8 @@ function ChooseUs() {
                     <div className="content">
                       <h4>Personalized Care</h4>
                       <p>
-                        Every pet is unique. We create custom care plans to
-                        match your pet’s needs, preferences, and routines.
+                        Every pet is unique — we help you find care that matches
+                        their personality, habits, and needs.
                       </p>
                     </div>
                   </div>
@@ -149,10 +153,10 @@ function ChooseUs() {
                       <img src="assets/images/icon/team.svg" alt="" />
                     </div>
                     <div className="content">
-                      <h4>Trusted Team</h4>
+                      <h4>Verified Providers</h4>
                       <p>
-                        Our experienced, pet-loving staff are carefully vetted
-                        and dedicated to your pet’s happiness and safety.
+                        All service providers are screened, trusted, and rated
+                        by real pet owners.
                       </p>
                     </div>
                   </div>
@@ -163,10 +167,11 @@ function ChooseUs() {
                       <img src="assets/images/icon/mind.svg" alt="" />
                     </div>
                     <div className="content">
-                      <h4>Peace of Mind</h4>
+                      <h4>Rewards & Giving Back</h4>
                       <p>
-                        Enjoy real-time updates and support, knowing your pet is
-                        in caring hands with PetziPal.
+                        Earn points for every service you book and help us give
+                        back — a porEon of every transacEon goes toward feeding
+                        and caring for street animals across Sri Lanka.
                       </p>
                     </div>
                   </div>

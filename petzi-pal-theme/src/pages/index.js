@@ -17,10 +17,10 @@ export default function Home() {
       <Banner1 />
       <Home1Service />
       <Home1About />
-      <Home1feature />
+      {/* <Home1feature /> */}
       <FeatureCounter />
       <ChooseUs />
-      <Home1Testimonial />
+      {/* <Home1Testimonial /> */}
       <Home1Blog />
       <Home1Gallary />
       <Footer1 />

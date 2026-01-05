@@ -30,27 +30,12 @@ function Breadcrumb({ pageName = "Page Name", pageTitle = "Page Title" }) {
               </nav>
             </div>
             <div className="banner-img d-lg-none d-block">
-              <img
-                className="img-fluid"
-                src="assets/images/bg/inner-banner-img.png"
-                alt=""
-              />
             </div>
           </div>
           <div className="col-lg-6">
             <div className="banner-img d-lg-block d-none">
               <div className="banner-img-bg">
-                <img
-                  className="img-fluid"
-                  src="assets/images/bg/inner-banner-vec.png"
-                  alt=""
-                />
               </div>
-              <img
-                className="img-fluid"
-                src="assets/images/bg/inner-banner-img.png"
-                alt=""
-              />
             </div>
           </div>
         </div>
