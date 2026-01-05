@@ -52,44 +52,13 @@ function ProductDetails({ service }) {
     <>
       <div className="row g-lg-4 gy-5 mb-120">
         <div className="col-lg-7">
-          <div className="tab-content tab-content1" id="v-pills-tabContent">
-            {displayImages.map((image, index) => (
-              <div
-                key={index}
-                className={`tab-pane fade ${index === 0 ? 'active show' : ''}`}
-                id={`v-pills-img${index + 1}`}
-                role="tabpanel"
-                aria-labelledby={`v-pills-img${index + 1}-tab`}
-              >
-                <img
-                  className="img-fluid"
-                  src={image}
-                  alt={service?.name || `Service image ${index + 1}`}
-                />
-              </div>
-            ))}
-          </div>
-          <div
-            className="nav nav1 nav-pills"
-            id="v-pills-tab"
-            role="tablist"
-            aria-orientation="vertical"
-          >
-            {displayImages.map((image, index) => (
-              <button
-                key={index}
-                className={`nav-link ${index === 0 ? 'active' : ''}`}
-                id={`v-pills-img${index + 1}-tab`}
-                data-bs-toggle="pill"
-                data-bs-target={`#v-pills-img${index + 1}`}
-                type="button"
-                role="tab"
-                aria-controls={`v-pills-img${index + 1}`}
-                aria-selected={index === 0}
-              >
-                <img src={image} alt={service?.name || `Service thumbnail ${index + 1}`} />
-              </button>
-            ))}
+          <div className="shop-details-img">
+            <img
+              className="img-fluid w-100"
+              src={service?.image || "assets/images/bg/banner-img.jpg"}
+              alt={service?.name || "Service image"}
+              style={{ borderRadius: '12px' }}
+            />
           </div>
         </div>
         <div className="col-lg-5">

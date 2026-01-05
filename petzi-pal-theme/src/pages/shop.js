@@ -121,8 +121,14 @@ function Shop() {
   };
 
   useEffect(() => {
-    if (router.isReady && router.query.service) {
-      setSelectedService(router.query.service);
+    if (router.isReady) {
+      const qService = router.query.service;
+      console.log("Shop.js - Router ready. service query:", qService);
+      if (qService) {
+        setSelectedService(String(qService));
+      } else {
+        setSelectedService("");
+      }
     }
   }, [router.isReady, router.query.service]);
 
@@ -299,7 +305,7 @@ function Shop() {
               </div>
               <div className="row g-4 justify-content-center">
                 <ShopCard
-                  selectedServiceType={selectedService}
+                  serviceTypeId={selectedService}
                   selectedLocations={selectedLocations}
                 />
               </div>

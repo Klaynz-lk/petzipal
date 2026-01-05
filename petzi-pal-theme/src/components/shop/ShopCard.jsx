@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
-function ShopCard({ selectedServiceType, selectedLocations }) {
+function ShopCard({ serviceTypeId, selectedLocations }) {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,58 +10,64 @@ function ShopCard({ selectedServiceType, selectedLocations }) {
   const endpoint = `${backendUrl}/api/v1/pet-services`;
 
   useEffect(() => {
+    let isMounted = true;
     const fetchServices = async () => {
       try {
         setLoading(true);
         let url = endpoint;
-        
+
         // If a specific service type is selected, add it as a query parameter
-        if (selectedServiceType) {
-          url += `?type=${selectedServiceType}`;
+        if (serviceTypeId) {
+          url += `?type=${serviceTypeId}`;
         }
-        
-        console.log("ShopCard fetching services with URL:", url);
-        console.log("Selected service type:", selectedServiceType);
-        
+
+        console.log("ShopCard - isMounted:", isMounted, "serviceTypeId prop:", serviceTypeId);
+        console.log("ShopCard - Fetching URL:", url);
+
         const res = await fetch(url);
         if (!res.ok) throw new Error("Failed to fetch services");
         const data = await res.json();
-        console.log("Fetched services:", data);
-        
+
+        if (!isMounted) return;
+
+        console.log("ShopCard - Received data count:", data.length);
+
         // Filter services by selected service type and locations
         let filteredServices = data;
-        
-        // Filter by service type
-        if (selectedServiceType) {
+
+        // Filter by service type (STRICT FRONTEND FILTER)
+        if (serviceTypeId) {
           filteredServices = filteredServices.filter(service => {
-            const serviceTypeId = service.petServiceType.id;
-            return serviceTypeId == selectedServiceType;
+            const currentTypeId = service.petServiceTypeID || service.petServiceType?.id;
+            return String(currentTypeId) === String(serviceTypeId);
           });
-          console.log("After service type filtering:", filteredServices);
+          console.log("ShopCard - After type filter count:", filteredServices.length);
         }
-        
+
         // Filter by locations
         if (selectedLocations && selectedLocations.length > 0) {
           filteredServices = filteredServices.filter(service => {
             const serviceLocation = service.location?.city || service.location?.name || service.location;
             return selectedLocations.includes(serviceLocation);
           });
-          console.log("After location filtering:", filteredServices);
+          console.log("ShopCard - After location filter count:", filteredServices.length);
         }
-        
-        console.log("Final filtered services:", filteredServices);
-        
+
+        console.log("ShopCard - FINAL services to set:", filteredServices.map(s => s.id));
         setServices(filteredServices);
       } catch (error) {
-        console.error("Error fetching services:", error);
-        setError(error.message);
+        if (isMounted) {
+          console.error("ShopCard - Error:", error);
+          setError(error.message);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
-    
+
     fetchServices();
-  }, [endpoint, selectedServiceType, selectedLocations]);
+    return () => { isMounted = false; };
+  }, [endpoint, serviceTypeId, selectedLocations]);
   if (loading) {
     return (
       <div className="col-12 text-center">
