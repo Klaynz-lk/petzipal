@@ -31,10 +31,20 @@ function Shop() {
         if (!backendUrl) {
           throw new Error("Backend URL is not configured");
         }
-        const res = await fetch(endpoint);
-        const typeRes = await fetch(typeEndpoint);
-        if (!res.ok) throw new Error("Failed to fetch services");
-        if (!typeRes.ok) throw new Error("Failed to fetch service types");
+        const res = await fetch(endpoint).catch(err => {
+          console.warn("Shop: Error fetching services:", err.message);
+          return null;
+        });
+        const typeRes = await fetch(typeEndpoint).catch(err => {
+          console.warn("Shop: Error fetching types:", err.message);
+          return null;
+        });
+
+        if (!res || !typeRes) {
+          throw new Error("Network error: Could not reach the server.");
+        }
+
+        if (!res.ok || !typeRes.ok) throw new Error("Failed to fetch services or types from server");
         const data = await res.json();
         const typeData = await typeRes.json();
         setTypeData(typeData);

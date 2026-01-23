@@ -82,25 +82,48 @@ function Header1() {
     };
   }, []);
 
-  // Fetch all services on component mount
+  // Fetch all services on component mount for search functionality
   useEffect(() => {
+    let isMounted = true;
     const fetchServices = async () => {
       try {
         const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
         if (!backendUrl) {
-          console.warn("Backend URL is not defined. Search functionality will be limited.");
+          console.warn("Header1: NEXT_PUBLIC_BACKEND_URL is not defined.");
           return;
         }
-        const endpoint = `${backendUrl}/api/v1/pet-services`;
-        const res = await fetch(endpoint);
-        if (!res.ok) throw new Error("Failed to fetch services");
+
+        // Ensure URL is valid before fetching
+        const baseUrl = backendUrl.trim();
+        const endpoint = `${baseUrl}/api/v1/pet-services`;
+
+        console.log("Header1: Attempting to fetch services for search...");
+        const res = await fetch(endpoint).catch(err => {
+          // Inner catch specifically for the fetch promise to avoid unhandled rejection overlay
+          console.warn("Header1: Network error fetching services (likely CORS or server unreachable).", err.message);
+          return null;
+        });
+
+        if (!res) return; // Exit if fetch failed
+
+        if (!res.ok) {
+          console.warn(`Header1: Failed to fetch services. Status: ${res.status}`);
+          return;
+        }
+
         const data = await res.json();
-        setAllServices(data);
+        if (isMounted) {
+          setAllServices(data || []);
+          console.log(`Header1: Successfully loaded ${data?.length || 0} services for search.`);
+        }
       } catch (error) {
-        console.error("Error fetching services:", error);
+        // Catch any other errors (JSON parsing, etc.)
+        console.warn("Header1: Unexpected error in fetchServices:", error.message);
       }
     };
+
     fetchServices();
+    return () => { isMounted = false; };
   }, []);
 
   // Filter services based on search query

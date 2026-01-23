@@ -27,8 +27,17 @@ function ShopCard({ serviceTypeId, selectedLocations }) {
         console.log("ShopCard - isMounted:", isMounted, "serviceTypeId prop:", serviceTypeId);
         console.log("ShopCard - Fetching URL:", url);
 
-        const res = await fetch(url);
-        if (!res.ok) throw new Error("Failed to fetch services");
+        const res = await fetch(url).catch(err => {
+          console.warn("ShopCard: Network error fetching services:", err.message);
+          return null;
+        });
+
+        if (!res) {
+          if (isMounted) setError("Network error: Could not reach the server.");
+          return;
+        }
+
+        if (!res.ok) throw new Error(`Server error: ${res.status}`);
         const data = await res.json();
 
         if (!isMounted) return;
