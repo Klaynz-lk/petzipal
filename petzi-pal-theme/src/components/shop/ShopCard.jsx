@@ -128,10 +128,44 @@ function ShopCard({ serviceTypeId, selectedLocations }) {
                     <a>{name}</a>
                   </Link>
                 </h4>
-                <div className="service-info mt-2">
-                  <span className="d-block fw-bold text-primary">
-                    Rs. {price || "Contact for price"}
-                  </span>
+                <div className="service-info ">
+                  <p className="description mb-2">{description || "Professional pet service"}</p>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="d-flex align-items-center gap-2">
+                      <i className="bi bi-person-badge" title="Provider" />
+                      {provider_name || "Professional"}
+                    </span>
+                    <span className="d-flex align-items-center gap-2">
+                      <i className="bi bi-geo-alt" title="Location" />
+                      {location?.city || location || "Available"}
+                    </span>
+                  </div>
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="d-flex align-items-center gap-2">
+                      <i className="bi bi-cash-coin" title="Price" />
+                      Rs. {price || "Contact for price"}
+                    </span>
+                    <span className="d-flex align-items-center gap-2">
+                      <i className="bi bi-clock-history" title="Duration" />
+                      {duration || "Flexible"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="review mb-3">
+                  <ul>
+                    {[...Array(5)].map((_, index) => (
+                      <li key={index}>
+                        <i className={`bi bi-star${index < (rating || 5) ? '-fill' : ''}`} />
+                      </li>
+                    ))}
+                  </ul>
+                  <span>({rating || 5})</span>
+                </div>
+                <div className="d-flex justify-content-center">
+                  <Link href={`/shop-details?id=${id}`} legacyBehavior>
+                    <a className="account-btn">View Details</a>
+                  </Link>
                 </div>
               </div>
             </div>
