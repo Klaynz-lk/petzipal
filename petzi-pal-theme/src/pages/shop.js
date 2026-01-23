@@ -31,20 +31,10 @@ function Shop() {
         if (!backendUrl) {
           throw new Error("Backend URL is not configured");
         }
-        const res = await fetch(endpoint).catch(err => {
-          console.warn("Shop: Error fetching services:", err.message);
-          return null;
-        });
-        const typeRes = await fetch(typeEndpoint).catch(err => {
-          console.warn("Shop: Error fetching types:", err.message);
-          return null;
-        });
-
-        if (!res || !typeRes) {
-          throw new Error("Network error: Could not reach the server.");
-        }
-
-        if (!res.ok || !typeRes.ok) throw new Error("Failed to fetch services or types from server");
+        const res = await fetch(endpoint);
+        const typeRes = await fetch(typeEndpoint);
+        if (!res.ok) throw new Error("Failed to fetch services");
+        if (!typeRes.ok) throw new Error("Failed to fetch service types");
         const data = await res.json();
         const typeData = await typeRes.json();
         setTypeData(typeData);
@@ -55,12 +45,20 @@ function Shop() {
 
         data.forEach(service => {
           if (service.location) {
-            const locationKey = service.location.city || service.location.name || service.location;
+            // Safe extraction of location string from object or nested object
+            let locationKey = "";
+            if (typeof service.location === 'string') {
+              locationKey = service.location;
+            } else if (typeof service.location === 'object') {
+              const val = service.location.city || service.location.name || "";
+              locationKey = typeof val === 'object' ? val.city || val.name || "" : val;
+            }
+
             if (locationKey && !locationMap.has(locationKey)) {
               locationMap.set(locationKey, {
-                id: locationKey.toLowerCase().replace(/\s+/g, '-'),
+                id: String(locationKey).toLowerCase().replace(/\s+/g, '-'),
                 name: locationKey,
-                city: service.location.city || service.location.name || service.location
+                city: locationKey
               });
             }
           }

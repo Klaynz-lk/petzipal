@@ -5,7 +5,9 @@ function FeatureCounter() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const element = document.getElementById("my-element");
+      const element = document.getElementById("feature-counter-trigger");
+      if (!element) return;
+
       const elementTop = element.getBoundingClientRect().top;
       const elementBottom = element.getBoundingClientRect().bottom;
       const viewportHeight = window.innerHeight;
@@ -32,7 +34,7 @@ function FeatureCounter() {
               <div className="coundown">
                 <div className="d-flex align-items-center gap-2">
                   <h3 className="odometer">
-                    <div id="my-element">
+                    <div id="feature-counter-trigger">
                       {startCounting ? (
                         <CountUp start={0} end={0} duration={3} />
                       ) : (
@@ -54,7 +56,7 @@ function FeatureCounter() {
               <div className="coundown">
                 <div className="d-flex align-items-center gap-12">
                   <h3 className="odometer">
-                    <div id="my-element">
+                    <div>
                       {startCounting ? (
                         <CountUp start={0} end={0} duration={3} />
                       ) : (
@@ -76,7 +78,7 @@ function FeatureCounter() {
               <div className="coundown">
                 <div className="d-flex align-items-center gap-2">
                   <h3 className="odometer">
-                    <div id="my-element">
+                    <div>
                       {startCounting ? (
                         <CountUp start={0} end={48} duration={3} />
                       ) : (
@@ -97,7 +99,7 @@ function FeatureCounter() {
               <div className="coundown">
                 <div className="d-flex align-items-center gap-2">
                   <h3 className="odometer">
-                    <div id="my-element">
+                    <div>
                       {startCounting ? (
                         <CountUp start={0} end={63} duration={3} />
                       ) : (
