@@ -32,6 +32,7 @@ function reducer(state, action) {
 
 function Header2() {
   const currentRoute = useRouter().pathname;
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initialState);
   const headerRef = useRef(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);

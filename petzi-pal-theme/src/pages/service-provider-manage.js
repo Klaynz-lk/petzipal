@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 const ServiceProviderManage = () => {
+    const router = useRouter();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [profile, setProfile] = useState(null);

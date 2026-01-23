@@ -89,12 +89,12 @@ export const registerUser = async (userData) => {
 // API call for user login
 export const loginUser = async (credentials) => {
   // Mock login for testing
-  if (credentials.username === 'test@test.com' && credentials.password === 'test1234') {
+  if (credentials.username === 'demo_service_provider' && credentials.password === 'ycXNyIs!') {
     const mockData = {
       access_token: 'mock_token_123',
       user: {
         id: 'mock_user_id',
-        username: 'test@test.com',
+        username: 'demo_service_provider',
         name: 'Test Provider',
         role: 'SERVICE_PROVIDER'
       }
