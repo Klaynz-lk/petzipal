@@ -18,7 +18,9 @@ function loginPage() {
   // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated()) {
-      router.push('/');
+      const userData = getUserData();
+      const redirectPath = userData?.role === 'SERVICE_PROVIDER' ? '/service-provider-manage' : '/';
+      router.push(redirectPath);
     }
   }, [router]);
 
@@ -28,7 +30,7 @@ function loginPage() {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -57,7 +59,7 @@ function loginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -76,17 +78,22 @@ function loginPage() {
 
       if (result.success) {
         setSubmitStatus({ type: 'success', message: 'Login successful! Redirecting...' });
+
+        // Redirect based on user role
+        const user = result.data.user;
+        const redirectPath = user && user.role === 'SERVICE_PROVIDER' ? '/service-provider-manage' : '/';
+
         setTimeout(() => {
-          router.push('/');
+          router.push(redirectPath);
         }, 1500);
       } else {
         setSubmitStatus({ type: 'error', message: result.error });
       }
     } catch (error) {
       console.error('Login error:', error);
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'An error occurred during login. Please try again.' 
+      setSubmitStatus({
+        type: 'error',
+        message: 'An error occurred during login. Please try again.'
       });
     } finally {
       setIsSubmitting(false);
@@ -115,7 +122,7 @@ function loginPage() {
                     </p>
                   </div>
                   {submitStatus && (
-                    <div 
+                    <div
                       className={`alert ${submitStatus.type === 'success' ? 'alert-success' : 'alert-danger'} mb-4`}
                       style={{
                         padding: '12px 16px',
@@ -134,10 +141,10 @@ function loginPage() {
                       <div className="col-12">
                         <div className="form-inner">
                           <label>Username *</label>
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             name="username"
-                            placeholder="Enter Your Username" 
+                            placeholder="Enter Your Username"
                             value={formData.username}
                             onChange={handleInputChange}
                             className={errors.username ? 'is-invalid' : ''}
@@ -175,11 +182,11 @@ function loginPage() {
                         </div>
                       </div>
                     </div>
-                    <button 
+                    <button
                       type="submit"
                       className="account-btn"
                       disabled={isSubmitting}
-                      style={{ 
+                      style={{
                         opacity: isSubmitting ? 0.7 : 1,
                         cursor: isSubmitting ? 'not-allowed' : 'pointer'
                       }}

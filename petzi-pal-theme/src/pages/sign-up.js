@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Breadcrumb from "../components/breadcrumb/Breadcrumb";
 import Layout from "../layout/Layout";
-import { 
-  registerUser, 
-  convertImageToBase64, 
-  validateEmail, 
-  validatePassword, 
-  validatePhoneNumber 
+import {
+  registerUser,
+  convertImageToBase64,
+  validateEmail,
+  validatePassword,
+  validatePhoneNumber
 } from "../utils/authUtils";
 
 function signUpPage() {
@@ -36,7 +36,7 @@ function signUpPage() {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
@@ -117,7 +117,7 @@ function signUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -134,7 +134,7 @@ function signUpPage() {
         address: formData.address,
         password: formData.password,
         has_provider_access: formData.has_provider_access,
-        role_id: 1, 
+        role_id: 1,
         ...(profilePictureBase64 && { profile_picture: profilePictureBase64 })
       };
 
@@ -150,9 +150,9 @@ function signUpPage() {
       }
     } catch (error) {
       console.error('Registration error:', error);
-      setSubmitStatus({ 
-        type: 'error', 
-        message: 'An error occurred during registration. Please try again.' 
+      setSubmitStatus({
+        type: 'error',
+        message: 'An error occurred during registration. Please try again.'
       });
     } finally {
       setIsSubmitting(false);
@@ -182,7 +182,7 @@ function signUpPage() {
                     </p>
                   </div>
                   {submitStatus && (
-                    <div 
+                    <div
                       className={`alert ${submitStatus.type === 'success' ? 'alert-success' : 'alert-danger'} mb-4`}
                       style={{
                         padding: '12px 16px',
@@ -201,10 +201,10 @@ function signUpPage() {
                       <div className="col-md-12">
                         <div className="form-inner">
                           <label>Full Name *</label>
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             name="name"
-                            placeholder="Enter Your Full Name" 
+                            placeholder="Enter Your Full Name"
                             value={formData.name}
                             onChange={handleInputChange}
                             className={errors.name ? 'is-invalid' : ''}
@@ -215,10 +215,10 @@ function signUpPage() {
                       <div className="col-md-12">
                         <div className="form-inner">
                           <label>Username *</label>
-                          <input 
-                            type="text" 
+                          <input
+                            type="text"
                             name="username"
-                            placeholder="Enter Your Username" 
+                            placeholder="Enter Your Username"
                             value={formData.username}
                             onChange={handleInputChange}
                             className={errors.username ? 'is-invalid' : ''}
@@ -229,10 +229,10 @@ function signUpPage() {
                       <div className="col-md-12">
                         <div className="form-inner">
                           <label>Email *</label>
-                          <input 
-                            type="email" 
+                          <input
+                            type="email"
                             name="email"
-                            placeholder="Enter Your Email" 
+                            placeholder="Enter Your Email"
                             value={formData.email}
                             onChange={handleInputChange}
                             className={errors.email ? 'is-invalid' : ''}
@@ -331,8 +331,8 @@ function signUpPage() {
                       <div className="col-md-12">
                         <div className="form-agreement form-inner d-flex justify-content-between flex-wrap">
                           <div className="form-group">
-                            <input 
-                              type="checkbox" 
+                            <input
+                              type="checkbox"
                               id="providerAccess"
                               name="has_provider_access"
                               checked={formData.has_provider_access}
@@ -345,11 +345,11 @@ function signUpPage() {
                         </div>
                       </div>
                     </div>
-                    <button 
+                    <button
                       type="submit"
                       className="account-btn"
                       disabled={isSubmitting}
-                      style={{ 
+                      style={{
                         opacity: isSubmitting ? 0.7 : 1,
                         cursor: isSubmitting ? 'not-allowed' : 'pointer'
                       }}
@@ -357,18 +357,7 @@ function signUpPage() {
                       {isSubmitting ? 'Creating Account...' : 'Create Account'}
                     </button>
                   </form>
-                  <div className="alternate-signup-box">
-                    <h6>or signup WITH</h6>
-                    <div className="btn-group gap-4">
-                      <a
-                        href="#"
-                        className="eg-btn google-btn d-flex align-items-center"
-                      >
-                        <i className="bx bxl-google" />
-                        <span>signup whit google</span>
-                      </a>
-                    </div>
-                  </div>
+
                   <div className="form-poicy-area">
                     <p>
                       By clicking the "signup" button, you create a PetziPal

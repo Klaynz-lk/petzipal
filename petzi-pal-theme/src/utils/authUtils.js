@@ -88,6 +88,22 @@ export const registerUser = async (userData) => {
 
 // API call for user login
 export const loginUser = async (credentials) => {
+  // Mock login for testing
+  if (credentials.username === 'test@test.com' && credentials.password === 'test1234') {
+    const mockData = {
+      access_token: 'mock_token_123',
+      user: {
+        id: 'mock_user_id',
+        username: 'test@test.com',
+        name: 'Test Provider',
+        role: 'SERVICE_PROVIDER'
+      }
+    };
+    saveAuthToken(mockData.access_token);
+    saveUserData(mockData.user);
+    return { success: true, data: mockData };
+  }
+
   try {
     // Ensure we send username and password as expected by the API
     const loginData = {
@@ -130,7 +146,7 @@ export const loginUser = async (credentials) => {
     // --- END OF CORRECTION ---
 
     // Return the nested data object
-    return { success: true, data: data.data }; 
+    return { success: true, data: data.data };
 
   } catch (error) {
     console.error('Login error:', error);

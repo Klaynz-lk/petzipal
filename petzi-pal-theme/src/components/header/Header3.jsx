@@ -38,6 +38,7 @@ function Header3() {
   const [userData, setUserData] = useState(null);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const headerRef = useRef(null);
+  const dropdownRef = useRef(null);
 
   const handleScroll = () => {
     const { scrollY } = window;
@@ -76,14 +77,14 @@ function Header3() {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (showProfileDropdown && !event.target.closest('.profile-dropdown')) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowProfileDropdown(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showProfileDropdown]);
+  }, []);
 
   const handleLogout = () => {
     logoutUser();
@@ -284,11 +285,17 @@ function Header3() {
                     </Link>
                   </li>
                   <li>
-                    <Link legacyBehavior href="/login">
-                      <a className={currentRoute === "/login" ? "active" : ""}>
-                        Login
-                      </a>
-                    </Link>
+                    {isLoggedIn ? (
+                      <Link legacyBehavior href={userData?.role === 'SERVICE_PROVIDER' ? "/service-provider-manage" : "/profile"}>
+                        <a>{userData?.role === 'SERVICE_PROVIDER' ? "Manage Profile" : "Profile"}</a>
+                      </Link>
+                    ) : (
+                      <Link legacyBehavior href="/login">
+                        <a className={currentRoute === "/login" ? "active" : ""}>
+                          Login
+                        </a>
+                      </Link>
+                    )}
                   </li>
                   <li>
                     <Link legacyBehavior href="/sign-up">
@@ -509,122 +516,61 @@ function Header3() {
                 </Link>
               </li>
               {isLoggedIn ? (
-                <li className="profile-dropdown">
-                  <div
-                    className="profile-trigger d-flex align-items-center"
+                <li style={{ marginLeft: '15px' }} ref={dropdownRef} className="position-relative">
+                  <button
+                    className="profile-btn-circle d-flex align-items-center justify-content-center p-0 border-0"
                     onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                    style={{ cursor: 'pointer' }}
+                    style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      overflow: 'hidden',
+                      backgroundColor: '#eee',
+                      transition: 'box-shadow 0.3s'
+                    }}
                   >
-                    <div className="profile-avatar me-2">
-                      {userData?.profile_picture ? (
-                        <img
-                          src={userData.profile_picture}
-                          alt="Profile"
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            objectFit: 'cover'
-                          }}
-                        />
-                      ) : (
-                        <div
-                          style={{
-                            width: '32px',
-                            height: '32px',
-                            borderRadius: '50%',
-                            backgroundColor: '#007bff',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: 'white',
-                            fontSize: '14px',
-                            fontWeight: 'bold'
-                          }}
-                        >
-                          {userData?.name?.charAt(0)?.toUpperCase() || 'U'}
-                        </div>
-                      )}
-                    </div>
-                    <span className="profile-name d-none d-md-inline" style={{ fontSize: '14px', color: '#333' }}>
-                      {userData?.name || 'User'}
-                    </span>
-                    <i className="bi bi-chevron-down ms-1" style={{ fontSize: '12px' }}></i>
-                  </div>
+                    {userData?.profile_picture ? (
+                      <img
+                        src={userData.profile_picture}
+                        alt="Profile"
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <div className="d-flex align-items-center justify-content-center w-100 h-100 bg-primary text-white">
+                        {userData?.name ? userData.name.charAt(0).toUpperCase() : <i className="bi bi-person"></i>}
+                      </div>
+                    )}
+                  </button>
 
                   {showProfileDropdown && (
                     <div
-                      className="profile-dropdown-menu"
+                      className="profile-dropdown-menu position-absolute bg-white shadow rounded p-2"
                       style={{
-                        position: 'absolute',
                         top: '100%',
-                        right: '0',
-                        backgroundColor: 'white',
-                        border: '1px solid #ddd',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                        zIndex: 1000,
+                        right: 0,
                         minWidth: '200px',
-                        padding: '8px 0'
+                        zIndex: 1001,
+                        marginTop: '10px',
+                        border: '1px solid #eee'
                       }}
                     >
-                      <div className="profile-info px-3 py-2" style={{ borderBottom: '1px solid #eee' }}>
-                        <div className="fw-bold" style={{ fontSize: '14px' }}>
-                          {userData?.name || 'User'}
-                        </div>
-                        <div className="text-muted" style={{ fontSize: '12px' }}>
-                          {userData?.email || ''}
-                        </div>
+                      <div className="px-3 py-2 border-bottom mb-2">
+                        <p className="mb-0 fw-bold text-dark" style={{ fontSize: '14px' }}>{userData?.name || "User"}</p>
+                        <p className="mb-0 text-muted" style={{ fontSize: '12px' }}>{userData?.username || ""}</p>
                       </div>
-                      <div className="profile-actions">
-                        <Link legacyBehavior href="/profile">
-                          <a
-                            className="dropdown-item d-block px-3 py-2"
-                            style={{
-                              textDecoration: 'none',
-                              color: '#333',
-                              fontSize: '14px',
-                              transition: 'background-color 0.2s'
-                            }}
-                            onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
-                            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                          >
-                            <i className="bi bi-person me-2"></i>
-                            Profile
-                          </a>
-                        </Link>
-                        <Link legacyBehavior href="/orders">
-                          <a
-                            className="dropdown-item d-block px-3 py-2"
-                            style={{
-                              textDecoration: 'none',
-                              color: '#333',
-                              fontSize: '14px',
-                              transition: 'background-color 0.2s'
-                            }}
-                            onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
-                            onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                          >
-                            <i className="bi bi-bag me-2"></i>
-                            My Orders
-                          </a>
-                        </Link>
-                        <div
-                          className="dropdown-item d-block px-3 py-2"
-                          onClick={handleLogout}
-                          style={{
-                            cursor: 'pointer',
-                            color: '#dc3545',
-                            fontSize: '14px',
-                            transition: 'background-color 0.2s'
-                          }}
-                          onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
-                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                        >
-                          <i className="bi bi-box-arrow-right me-2"></i>
-                          Logout
-                        </div>
-                      </div>
+                      <Link legacyBehavior href={userData?.role === 'SERVICE_PROVIDER' ? "/service-provider-manage" : "/profile"}>
+                        <a className="dropdown-item d-flex align-items-center gap-2 px-3 py-2 rounded" style={{ fontSize: '14px', textDecoration: 'none', color: '#333' }}>
+                          <i className="bi bi-person-circle"></i> Go Profile
+                        </a>
+                      </Link>
+                      <hr className="my-1" />
+                      <button
+                        onClick={handleLogout}
+                        className="dropdown-item d-flex align-items-center gap-2 px-3 py-2 rounded text-danger"
+                        style={{ fontSize: '14px', border: 'none', background: 'none', width: '100%', textAlign: 'left', cursor: 'pointer' }}
+                      >
+                        <i className="bi bi-box-arrow-right"></i> Logout
+                      </button>
                     </div>
                   )}
                 </li>
