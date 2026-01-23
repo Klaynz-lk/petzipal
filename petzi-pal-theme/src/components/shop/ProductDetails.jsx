@@ -97,11 +97,16 @@ function ProductDetails({ service }) {
                       const loc = service?.location;
                       if (!loc) return "Available";
                       if (typeof loc === 'string') return loc;
-                      if (typeof loc === 'object') {
-                        // Priority search for common location string fields
-                        const value = loc.city || loc.name || loc.district || loc.location;
-                        if (typeof value === 'object') return value.city || value.name || value.district || "Available";
-                        return value || "Available";
+                      if (typeof loc === 'object' && loc !== null) {
+                        // Try to get a string from various possible fields
+                        const val = loc.city || loc.name || loc.district || loc.location;
+                        if (typeof val === 'string') return val;
+                        if (typeof val === 'object' && val !== null) {
+                          const deeperVal = val.city || val.name || val.district || val.location;
+                          if (typeof deeperVal === 'string') return deeperVal;
+                          return "Available";
+                        }
+                        return val || "Available";
                       }
                       return "Available";
                     })()}

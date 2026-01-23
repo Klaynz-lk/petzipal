@@ -395,9 +395,17 @@ function Header1() {
                             ) : null}
                             {service.location && (
                               <div style={{ fontSize: "12px", opacity: 0.7, marginTop: "2px" }}>
-                                {typeof service.location === 'string' ? service.location :
-                                  (typeof service.location.city === 'object' ? service.location.city?.city :
-                                    service.location.city || service.location.name || "")}
+                                {(() => {
+                                  const loc = service.location;
+                                  if (typeof loc === 'string') return loc;
+                                  if (typeof loc === 'object' && loc !== null) {
+                                    const city = typeof loc.city === 'object' ? loc.city?.city : loc.city;
+                                    const name = typeof loc.name === 'object' ? loc.name?.name : loc.name;
+                                    const val = city || name || "";
+                                    return typeof val === 'string' ? val : "";
+                                  }
+                                  return "";
+                                })()}
                               </div>
                             )}
                           </div>

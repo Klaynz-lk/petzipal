@@ -177,7 +177,7 @@ function Banner1() {
                         </option>
                         {petService.map((service) => (
                           <option key={service.id} value={service.id}>
-                            {service.location.city}
+                            {typeof service.location?.city === 'object' ? service.location.city?.city : (service.location?.city || service.location || "Available")}
                           </option>
                         ))}
                       </select>
@@ -276,7 +276,7 @@ function Banner1() {
                                     marginTop: "2px",
                                   }}
                                 >
-                                  {service.location.city}
+                                  {typeof service.location?.city === 'object' ? service.location.city?.city : (service.location?.city || service.location || "")}
                                 </div>
                               ) : null}
                             </div>

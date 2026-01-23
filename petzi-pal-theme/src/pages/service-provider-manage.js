@@ -223,9 +223,16 @@ const ServiceProviderManage = () => {
                                 <div className="location-info">
                                     <p className="mb-3 text-muted leading-snug">
                                         {profile.address || "No address provided"}<br />
-                                        {(typeof profile.city === 'object' ? profile.city?.city : profile.city) &&
-                                            `${typeof profile.city === 'object' ? profile.city?.city : profile.city}, `}
-                                        {typeof profile.district === 'object' ? profile.district?.district : profile.district}
+                                        {(() => {
+                                            const city = typeof profile.city === 'object' ? profile.city?.city : profile.city;
+                                            const district = typeof profile.district === 'object' ? (profile.district?.district?.district || profile.district?.district || profile.district?.name || "") : profile.district;
+
+                                            const cityStr = typeof city === 'string' ? city : "";
+                                            const districtStr = typeof district === 'string' ? district : "";
+
+                                            if (cityStr && districtStr) return `${cityStr}, ${districtStr}`;
+                                            return cityStr || districtStr || "";
+                                        })()}
                                     </p>
                                 </div>
                             </div>

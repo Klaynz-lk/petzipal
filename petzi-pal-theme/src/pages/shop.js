@@ -49,9 +49,18 @@ function Shop() {
             let locationKey = "";
             if (typeof service.location === 'string') {
               locationKey = service.location;
-            } else if (typeof service.location === 'object') {
-              const val = service.location.city || service.location.name || "";
-              locationKey = typeof val === 'object' ? val.city || val.name || "" : val;
+            } else if (typeof service.location === 'object' && service.location !== null) {
+              const val = service.location.city || service.location.name || service.location.district || "";
+              if (typeof val === 'object' && val !== null) {
+                locationKey = val.city || val.name || val.district || "";
+              } else {
+                locationKey = val;
+              }
+            }
+
+            // Ensure locationKey is a string for React rendering later
+            if (typeof locationKey !== 'string') {
+              locationKey = String(locationKey || "");
             }
 
             if (locationKey && !locationMap.has(locationKey)) {

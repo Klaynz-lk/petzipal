@@ -137,7 +137,21 @@ function ShopCard({ serviceTypeId, selectedLocations }) {
                     </span>
                     <span className="d-flex align-items-center gap-2">
                       <i className="bi bi-geo-alt" title="Location" />
-                      {location?.city || location || "Available"}
+                      {(() => {
+                        const loc = location;
+                        if (!loc) return "Available";
+                        if (typeof loc === 'string') return loc;
+                        if (typeof loc === 'object') {
+                          // Try to get a string from various possible fields
+                          const val = loc.city || loc.name || loc.district || loc.location;
+                          if (typeof val === 'string') return val;
+                          if (typeof val === 'object' && val !== null) {
+                            return val.city || val.name || val.district || "Available";
+                          }
+                          return "Available";
+                        }
+                        return "Available";
+                      })()}
                     </span>
                   </div>
                   <div className="d-flex justify-content-between align-items-center mb-2">
