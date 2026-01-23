@@ -87,6 +87,10 @@ function Header1() {
     const fetchServices = async () => {
       try {
         const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+        if (!backendUrl) {
+          console.warn("Backend URL is not defined. Search functionality will be limited.");
+          return;
+        }
         const endpoint = `${backendUrl}/api/v1/pet-services`;
         const res = await fetch(endpoint);
         if (!res.ok) throw new Error("Failed to fetch services");
@@ -389,11 +393,13 @@ function Header1() {
                                 {service.provider_name || service.vet_name}
                               </div>
                             ) : null}
-                            {service.location?.city ? (
+                            {service.location && (
                               <div style={{ fontSize: "12px", opacity: 0.7, marginTop: "2px" }}>
-                                {service.location.city}
+                                {typeof service.location === 'string' ? service.location :
+                                  (typeof service.location.city === 'object' ? service.location.city?.city :
+                                    service.location.city || service.location.name || "")}
                               </div>
-                            ) : null}
+                            )}
                           </div>
                         ))}
                       </div>

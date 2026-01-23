@@ -14,6 +14,9 @@ function ShopCard({ serviceTypeId, selectedLocations }) {
     const fetchServices = async () => {
       try {
         setLoading(true);
+        if (!backendUrl) {
+          throw new Error("Backend URL is not configured");
+        }
         let url = endpoint;
 
         // If a specific service type is selected, add it as a query parameter

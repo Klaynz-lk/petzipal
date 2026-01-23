@@ -35,6 +35,10 @@ const ServiceProviderManage = () => {
             setProfileLoading(true);
             setServicesLoading(true);
 
+            if (!backendUrl) {
+                throw new Error("Backend URL is not configured");
+            }
+
             // 1. Fetch Profile Data
             const profileRes = await fetch(`${backendUrl}/api/v1/pet-service-profile/user/${userId}`);
             if (!profileRes.ok) throw new Error("Failed to fetch profile");
@@ -219,7 +223,9 @@ const ServiceProviderManage = () => {
                                 <div className="location-info">
                                     <p className="mb-3 text-muted leading-snug">
                                         {profile.address || "No address provided"}<br />
-                                        {profile.city && `${profile.city}, `}{profile.district}
+                                        {(typeof profile.city === 'object' ? profile.city?.city : profile.city) &&
+                                            `${typeof profile.city === 'object' ? profile.city?.city : profile.city}, `}
+                                        {typeof profile.district === 'object' ? profile.district?.district : profile.district}
                                     </p>
                                 </div>
                             </div>

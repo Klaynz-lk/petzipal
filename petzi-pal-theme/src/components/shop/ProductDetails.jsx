@@ -92,7 +92,20 @@ function ProductDetails({ service }) {
               <div className="col-12 mt-2">
                 <div className="model-number d-flex align-items-center gap-2">
                   <span className="fw-semibold">Location:</span>
-                  <span>{service?.location?.city || service?.location?.name || service?.location || "Available"}</span>
+                  <span>
+                    {(() => {
+                      const loc = service?.location;
+                      if (!loc) return "Available";
+                      if (typeof loc === 'string') return loc;
+                      if (typeof loc === 'object') {
+                        // Priority search for common location string fields
+                        const value = loc.city || loc.name || loc.district || loc.location;
+                        if (typeof value === 'object') return value.city || value.name || value.district || "Available";
+                        return value || "Available";
+                      }
+                      return "Available";
+                    })()}
+                  </span>
                 </div>
               </div>
               <div className="col-12 mt-2">

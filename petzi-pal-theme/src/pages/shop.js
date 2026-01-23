@@ -28,6 +28,9 @@ function Shop() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
+        if (!backendUrl) {
+          throw new Error("Backend URL is not configured");
+        }
         const res = await fetch(endpoint);
         const typeRes = await fetch(typeEndpoint);
         if (!res.ok) throw new Error("Failed to fetch services");
